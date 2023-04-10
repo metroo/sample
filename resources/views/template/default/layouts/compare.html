@@ -1,0 +1,67 @@
+<include name="layouts/header.html" />
+
+<!--main-->
+<main class="page-container store-container store-compare-container" itemprop="mainEntity" itemscope itemtype="">
+	<div class="container">
+		<div class="page-context store-context store-compare-context">
+			<h1 class="page-title store-title store-compare-title" itemprop="headline">
+				@@title
+			</h1>
+			<hr class="page-separator store-separator store-compare-separator">
+			<if terms="@@products.any()">
+				<div class="store-compare-@@products.count()">
+					<div class="store-compare-headers">
+						<loop src="@@products">
+							<if terms='@@index.equal("0")'>
+								<div class="store-compare-headers-title store-compare-column">
+								</div>
+							</if>
+							<div class="store-compare-product store-compare-product-@@index store-compare-column">
+								<div class="store-compare-product-image">
+									<a href="@@url" class="store-compare-product-image-link">
+										<img src='@@image.default("/site/resources/images/empty.png")?m=thumb&w=300&h=300&q=high' class="img-fluid store-compare-product-image-element">
+									</a>
+								</div>
+								<h5 class="store-compare-item-title">
+									<a href="@@url" class="store-compare-item-link break-word">
+										@@title
+									</a>
+								</h5>
+								<a href="@@remove" class="btn btn-sm btn-danger text-white store-compare-product-remove" click-confirm="آیا از حذف مطمئن هستید؟">
+									<i class="fa fa-times"></i>
+									حذف
+								</a>
+							</div>
+						</loop>
+					</div>
+					<div class="store-compare-fields">
+						<loop src="@@fields">
+							<div class="store-compare-field">
+								<div class="store-compare-field-name store-compare-column break-word">
+									@@name
+								</div>
+								<loop src="@@values">
+									<div class="store-compare-field-value store-compare-column store-compare-field-value-@@index break-word">
+										@@value.default("---")
+									</div>
+								</loop>
+							</div>
+						</loop>
+					</div>
+				</div>
+			</if>
+			<if terms="@@products.empty()">
+				<div class="page-empty store-empty store-compare-empty">
+					هیچ موردی برای مقایسه انتخاب نشده.
+					<br>
+					<a href="/site/products" class="btn btn-sm btn-primary store-compare-back">
+						بازگشت
+					</a>
+				</div>
+			</if>
+		</div>
+	</div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html" />

@@ -1,0 +1,146 @@
+<include name="layouts/header.html" />
+
+<!--main-->
+<main class="page-container store-container store-list-container pb-0" itemprop="mainEntity" itemscope itemtype="http://schema.org/Store">
+	<div class="container">
+		<div class="page-context store-context store-list-context" store>
+			<include name="layouts/breadcrumb.html" />
+			<h1 class="page-title store-title store-list-title mb-0 mt-35" itemprop="headline">
+				@@title
+			</h1>
+			<if terms="@@content.exists()">
+				<div class="page-description store-description store-list-description break-word mt-3 text-sm pb-half"
+					 itemprop="description">
+					@@content
+				</div>
+			</if>
+			<if terms="@@user.admin">
+				<if terms="@@editurl.exists()">
+					<a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-page store-list-edit">
+						<i class="fa fa-pencil"></i>
+						ویرایش صفحه
+					</a>
+				</if>
+				<if terms="@@addurl.exists()">
+					<a href="@@addurl" class="btn btn-sm btn-create add-link add-link-product store-list-add" target="_blank">
+						<i class="fa fa-plus"></i>
+						ایجاد محصول
+					</a>
+				</if>
+			</if>
+			<if terms="@@image.exists()">
+				<link itemprop="image" href="@@image">
+			</if>
+
+			<div class="row pt-30">
+				<div class="col-lg-3">
+					<div class="store-sidebar store-list-sidebar">
+						<include name="layouts/pages/store/partials/sidebar.html" />
+					</div>
+				</div>
+				<div class="col-lg-9" store-ajax-context>
+					<div class="store-loading store-list-loading alert-white" ng-show="loading" auto-show>
+						<i class="fa fa-refresh fa-spin fa-fw"></i>
+						کمی صبر کنید...
+					</div>
+					<if terms="@@products.empty()">
+						<div class="page-empty store-empty store-list-empty alert alert-warning" ng-hide="loading">
+							موردی برای نمایش وجود ندارد.
+						</div>
+					</if>
+					<div class="store-sorting store-list-sorting d-flex align-items-center" ng-hide="loading">
+						<div class="store-sorting-title store-list-sorting-title">
+							ترتیب نمایش:
+						</div>
+						<button class="btn btn-sm store-sorting-item store-list-sorting-item" ng-class="model.sorting == null ? 'btn-blue' : 'btn-link'" ng-click="sort()">
+							جدیدترین
+						</button>
+						<button class="btn btn-sm store-sorting-item store-list-sorting-item" ng-class="model.sorting == 'rate' ? 'btn-blue' : 'btn-link'" ng-click="sort('rate')">
+							محبوب‌ترین
+						</button>
+						<button class="btn btn-sm store-sorting-item store-list-sorting-item" ng-class="model.sorting == 'price-desc' ? 'btn-blue' : 'btn-link'" ng-click="sort('price-desc')">
+							گران‌ترین
+						</button>
+						<button class="btn btn-sm store-sorting-item store-list-sorting-item" ng-class="model.sorting == 'price' ? 'btn-blue' : 'btn-link'" ng-click="sort('price')">
+							ارزان‌ترین
+						</button>
+					</div>
+					<hr class="page-separator store-separator store-list-separator">
+					<if terms="@@products.any()">
+						<div class="store-products store-list-products" ng-hide="loading">
+							<loop src="@@products">
+								<article class='store-product store-list-product custom-shadow mb-15 shadow-sm rounded p-25 p-sm-30 @@outofstock.whenever("store-list-product-outofstock")' itemprop="itemListElement" itemscope itemtype="http://schema.org/Product">
+									<if terms='@@discount.morethan("0")'>
+										<span class="store-product-discount">
+											@@discount٪
+										</span>
+									</if>
+
+
+									<div class="row">
+										<div class="col-sm-5 col-md-4 col-xl-3">
+											<div class="store-product-image store-list-product-image">
+												<a href="@@url" class="store-product-image-link store-list-product-image-link" title="@@metatitle">
+													<img src='@@image.default("/site/resources/images/empty.jpg")?m=crop&w=500&h=500&q=high' class="img-fluid center-block store-product-image-element store-list-product-image-element" alt="@@title" itemprop="image">
+												</a>
+											</div>
+										</div>
+										<div class="col-sm-7 col-md-8 col-xl-9">
+											<h2 class="store-product-title store-list-product-title mt-0 mb-half" itemprop="name">
+												<a href="@@url" class="store-product-link store-list-product-link font-weight-bold" title="@@metatitle" itemprop="url mainEntityOfPage">
+													@@title
+												</a>
+											</h2>
+											<if terms="@@outofstock.false()">
+											<if terms="@@compareprice.exists">
+												<span class="store-product-compare-price store-list-product-compare-price">
+													@@compareprice
+												</span>
+											</if>
+											<if terms="@@price.exists">
+												<span class="store-product-price store-list-product-price d-flex" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+													<meta itemprop="price" content="@@price.number.rials()">
+													<meta itemprop="priceCurrency" content="IRR">
+													<span class="justify-content-start pr-0 text-right">@@price تومان</span>
+												</span>
+											</if>
+											</if>
+
+											<if terms="@@outofstock">
+												<span class="store-product-outofstock-message store-list-product-outofstock-message">
+													ناموجود
+												</span>
+											</if>
+											<div class="store-list-product-description text-sm">
+												@@description.default("بدون شرح...")
+											</div>
+											<meta itemprop="position" content="@@index">
+											<if terms="@@outofstock.false()">
+												<div class="mt-2">
+													<button class="btn btn-sm btn-primary store-list-product-quick-view" ng-click="quickview(@@id, '/site/cart')">
+														<if terms="@@inquiry">استعلام محصول</if>
+														<if terms="@@inquiry.false()">
+															<i class="fa fa-shopping-cart"></i>
+															خرید
+														</if>
+													</button>
+												</div>
+											</if>
+										</div>
+									</div>
+								</article>
+							</loop>
+						</div>
+						<include name="layouts/pager.html" />
+					</if>
+				</div>
+			</div>
+			<div class="store-filters store-list-filters">
+				<include name="layouts/pages/store/partials/filters.html" />
+			</div>
+		</div>
+	</div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html" />

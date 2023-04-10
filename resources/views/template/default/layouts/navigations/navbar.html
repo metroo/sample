@@ -1,0 +1,35 @@
+<widget type="menu" name="navigation" section="سربرگ">
+    <button type="button" class="navbar-toggler bg-white border-0 shadow-sm rounded" data-toggle="collapse" data-target="#navbar-@@id"
+            aria-expanded="false" aria-controls="navbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-@@id" class="navbar-collapse collapse">
+        <ul class="navbar-nav" role="menu">
+            <loop src="@@items">
+                <li class="nav-item @@active" data-subset="@@subset.count()">
+                    <a href="@@url" class="nav-link" itemprop="url" target="@@target">
+                        @@title.truncate("50")
+                    </a>
+                    <if terms="@@subset.any()">
+                        <ul class="nav-subset" role="menu">
+                            <loop src="@@subset" recursive="@@subset">
+                                <li class="nav-subset-item @@active" data-subset="@@subset.count()">
+                                    <a href="@@url" class="nav-subset-link" itemprop="url"
+                                       target="@@target">
+                                        @@title.truncate("50")
+                                    </a>
+                                    <if terms="@@subset.any()">
+                                        <ul class="nav-subset" role="menu">
+                                            @@recursive
+                                        </ul>
+                                    </if>
+                                </li>
+                            </loop>
+                        </ul>
+                    </if>
+                </li>
+            </loop>
+        </ul>
+    </div>
+</widget>

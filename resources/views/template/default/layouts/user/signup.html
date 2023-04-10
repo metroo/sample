@@ -1,0 +1,315 @@
+<include name="layouts/header.html" />
+
+<!--main-->
+<main class="page-container signup-container" itemprop="mainEntity">
+	<div class="container">
+		<div class="page-context signup-context bg-white rounded shadow-sm">
+			<h1 class="page-title signup-title px-25 py-20 px-sm-30 py-md-25 px-md-35 py-lg-30 px-lg-40 border-bottom" itemprop="headline">
+				ثبت‌نام در وب‌سایت
+			</h1>
+			<if terms="@@users.signup.enabled">
+				<form name="signup" class="signup-form p-25 p-sm-30 p-md-35 p-lg-40" ng-submit="signup.$valid && submit()" eval="collect('@@returnurl')" signup dynamic-form auto-show novalidate>
+					<scope name="signup">
+						<include name="layouts/validation.html" />
+					</scope>
+					<div class="alert alert-success signup-succeed" ng-show="succeed">
+						<span ng-bind="succeed.description"></span>
+					</div>
+					<div ng-hide="succeed">
+						<div class="row form-group signup-name">
+							<label for="signup-name" class="col-form-label col-md-3 text-md-left signup-name-label">
+								نام و نام خانوادگی
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="text" id="signup-name" name="name" class="form-control" ng-model="model.name" ng-disabled="progress" auto-focus required>
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.name.$error" ng-show="signup.$submitted || signup.name.$dirty">
+									<span ng-message="required">
+										نام و نام خانوادگی را بنویسید.
+									</span>
+									<span ng-message="server">
+										<span ng-bind="validation.name"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-mobile">
+							<label for="signup-mobile" class="col-form-label col-md-3 text-md-left signup-mobile-label">
+								شماره موبایل
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="text" id="signup-mobile" name="mobile" class="form-control signup-mobile-input" ng-model="model.mobile" ng-disabled="progress" required>
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.mobile.$error" ng-show="signup.$submitted || signup.mobile.$dirty">
+									<span ng-message="required">
+										شماره موبایل را بنویسید.
+									</span>
+									<span ng-message="server">
+										<span ng-bind="validation.mobile"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-email">
+							<label for="signup-email" class="col-form-label col-md-3 text-md-left signup-email-label">
+								پست الکترونیک
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="text" id="signup-email" name="email" class="form-control text-left signup-email-input" ng-model="model.email" dir="ltr" ng-disabled="progress">
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.email.$error" ng-show="signup.$submitted || signup.email.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.email"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<hr class="page-separator signup-separator">
+						<div class="row form-group signup-username">
+							<label for="signup-username" class="col-form-label col-md-3 text-md-left signup-username-label">
+								نام کاربری
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<div class="input-group signup-username-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text signup-username-optional">
+											اختیاری
+										</span>
+									</div>
+									<input type="text" id="signup-username" name="username" class="form-control signup-username-input" ng-model="model.username" dir="ltr" placeholder="e.g. mohsen" ng-disabled="progress">
+								</div>
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.username.$error" ng-show="signup.$submitted || signup.username.$dirty">
+									<span ng-message="required">
+										نام کاربری را بنویسید.
+									</span>
+									<span ng-message="server">
+										<span ng-bind="validation.username"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-password">
+							<label for="signup-password" class="col-form-label col-md-3 text-md-left signup-password-label">
+								رمز عبور
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="password" id="signup-password" name="password" class="form-control text-left signup-password-input" ng-model="model.password" strength="medium" dir="ltr" ng-disabled="progress" required>
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.password.$error" ng-show="signup.$submitted || signup.password.$dirty">
+									<span ng-message="required">
+										رمز عبور را بنویسید.
+									</span>
+									<span ng-message="strength">
+										رمز عبور شما باید؛ حداقل 6 حرف و ترکیبی از حروف کوچک، بزرگ یا اعداد باشد.
+									</span>
+									<span ng-message="server">
+										<span ng-bind="validation.password"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-confirmpassword">
+							<label for="signup-confirmpassword" class="col-form-label col-md-3 text-md-left signup-confirmpassword-label">
+								تکرار رمز عبور
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="password" id="signup-confirmpassword" name="confirmpassword" class="form-control text-left signup-confirmpassword-input" ng-model="model.confirmpassword" compare="model.password" dir="ltr" ng-disabled="progress" required>
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.confirmpassword.$error" ng-show="signup.$submitted || signup.confirmpassword.$dirty">
+									<span ng-message="required">
+										تکرار رمز عبور را بنویسید.
+									</span>
+									<span ng-message="compare">
+										رمز عبور با تکرار آن یکسان نیست.
+									</span>
+									<span ng-message="server">
+										<span ng-bind="validation.confirmpassword"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<hr class="page-separator signup-separator">
+						<div class="row form-group signup-organization">
+							<label for="signup-organization" class="col-form-label col-md-3 text-md-left signup-organization-label">
+								نام شرکت
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="text" id="signup-organization" name="organization" class="form-control signup-organization-input" ng-model="model.organization" ng-disabled="progress">
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.organization.$error" ng-show="signup.$submitted || signup.organization.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.organization"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-phone">
+							<label for="signup-phone" class="col-form-label col-md-3 text-md-left signup-phone-label">
+								شماره تلفن
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="text" id="signup-phone" name="phone" class="form-control signup-phone-input" ng-model="model.phone" ng-disabled="progress">
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.phone.$error" ng-show="signup.$submitted || signup.phone.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.phone"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-fax">
+							<label for="signup-fax" class="col-form-label col-md-3 text-md-left signup-fax-label">
+								شماره فکس
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="text" id="signup-fax" name="fax" class="form-control signup-fax-input" ng-model="model.fax" ng-disabled="progress">
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.fax.$error" ng-show="signup.$submitted || signup.fax.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.fax"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-website">
+							<label for="signup-website" class="col-form-label col-md-3 text-md-left signup-website-label">
+								آدرس وب‌سایت
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="text" id="signup-website" name="website" class="form-control signup-website-input" ng-model="model.website" dir="ltr" ng-disabled="progress">
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.website.$error" ng-show="signup.$submitted || signup.website.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.website"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<hr class="page-separator signup-separator">
+						<div class="row form-group signup-country">
+							<label for="signup-country" class="col-form-label col-md-3 text-md-left signup-country-label">
+								کشور
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<select id="signup-country" name="country_id" class="form-control signup-country-input" ng-model="model.country_id" ng-disabled="progress">
+									<option value="{{country.id}}" ng-repeat="country in countries">
+										{{country.name}}
+									</option>
+								</select>
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.country_id.$error" ng-show="signup.$submitted || signup.country_id.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.country_id"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-state">
+							<label for="signup-state" class="col-form-label col-md-3 text-md-left signup-state-label">
+								استان
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<select id="signup-state" name="state_id" class="form-control signup-state-input" ng-model="model.state_id" ng-disabled="progress">
+									<option value="{{state.id}}" ng-repeat="state in states">
+										{{state.name}}
+									</option>
+								</select>
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.state_id.$error" ng-show="signup.$submitted || signup.state_id.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.state_id"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-city">
+							<label for="signup-city" class="col-form-label col-md-3 text-md-left signup-city-label">
+								شهر
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<select id="signup-city" name="city_id" class="form-control signup-city-input" ng-model="model.city_id" ng-disabled="progress">
+									<option value="{{city.id}}" ng-repeat="city in cities">
+										{{city.name}}
+									</option>
+								</select>
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.city_id.$error" ng-show="signup.$submitted || signup.city_id.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.city_id"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-zipcode">
+							<label for="signup-zipcode" class="col-form-label col-md-3 text-md-left signup-zipcode-label">
+								کد پستی
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="text" id="signup-zipcode" name="zipcode" class="form-control signup-zipcode-input" ng-model="model.zipcode" ng-disabled="progress">
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.zipcode.$error" ng-show="signup.$submitted || signup.zipcode.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.zipcode"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group signup-address">
+							<label for="signup-address" class="col-form-label col-md-3 text-md-left signup-address-label">
+								آدرس
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<input type="text" id="signup-address" name="address" class="form-control signup-address-input" ng-model="model.address" ng-disabled="progress">
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.address.$error" ng-show="signup.$submitted || signup.address.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.address"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<hr class="page-separator signup-separator">
+						<div class="row form-group signup-referrer">
+							<label for="signup-referrer" class="col-form-label col-md-3 text-md-left signup-referrer-label">
+								نحوه‌ی آشنایی
+							</label>
+							<div class="col-md-9 col-lg-6">
+								<select id="signup-referrer" name="referrer" class="form-control signup-referrer-input" ng-model="model.referrer" ng-disabled="progress">
+									<option>تبلیغات اینترنتی</option>
+									<option>موتورهای جستجو</option>
+									<option>معرفی توسط آشنایان</option>
+									<option>تبلیغات محیطی</option>
+									<option>دیگر موارد</option>
+								</select>
+								<div class="validation-inline signup-inline-error text-danger" ng-messages="signup.referrer.$error" ng-show="signup.$submitted || signup.referrer.$dirty">
+									<span ng-message="server">
+										<span ng-bind="validation.referrer"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<hr class="page-separator signup-separator">
+						<div class="row form-group">
+							<div class="col-md-3"></div>
+							<div class="col-md-9 col-lg-6">
+								<button class="btn btn-lg btn-success signup-submit" ng-disabled="progress">
+									ثبت‌نام
+								</button>
+								<a href="@@users.signin" class="btn btn-link signup-cancel" click-confirm="همه‌ی اطلاعات نوشته شده، حذف می‌شوند. آیا مطمئن هستید؟">
+									بازگشت
+								</a>
+								<div class="page-loading signup-loading" ng-show="progress">
+									<i class="fa fa-refresh fa-spin fa-fw"></i>
+									کمی صبر کنید...
+								</div>
+							</div>
+						</div>
+						<hr class="page-separator signup-separator">
+						<div class="row form-group">
+							<div class="col-md-3"></div>
+							<div class="col-md-9 col-lg-6">
+								<a href="@@users.recoverypass" class="signup-recoverypass">
+									آیا عضو وب‌سایت هستید، اما رمز عبور خود را فراموش کرده‌اید؟
+								</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</if>
+			<if terms="@@users.signup.enabled.false()">
+				<div class="alert alert-danger signup-disabled">
+					کاربر گرامی؛ در حال حاظر امکان ثبت‌نام در وب‌سایت غیرفعال شده است.
+				</div>
+			</if>
+		</div>
+	</div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html" />

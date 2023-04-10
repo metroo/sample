@@ -1,0 +1,93 @@
+<include name="layouts/header.html" />
+
+<!--main-->
+<main class="page-container signin-container" itemprop="mainEntity">
+	<div class="container">
+
+		<div class="page-context signin-context bg-white rounded shadow-sm">
+			<h1 class="page-title signin-title px-25 py-20 px-sm-30 py-md-25 px-md-35 py-lg-30 px-lg-40 border-bottom" itemprop="headline">
+				ورود به وب‌سایت
+			</h1>
+			<form method="post" name="signin" class="signin-form p-25 p-sm-30 p-md-35 p-lg-40" ng-submit="signin.$valid && submit()" eval="collect('@@returnurl')" signin dynamic-form auto-show novalidate>
+				<scope name="signin">
+					<include name="layouts/validation.html" />
+				</scope>
+				<div class="alert alert-success signin-succeed" ng-show="succeed">
+					<span ng-bind="succeed.description"></span>
+				</div>
+				<div class="row form-group signin-username">
+					<label for="signin-username" class="col-form-label col-md-3 text-md-left signin-username-label">
+						نام کاربری یا موبایل یا پست الکترونیک
+					</label>
+					<div class="col-md-9 col-lg-6">
+						<input type="text" id="signin-username" name="username" class="form-control signin-username-input" ng-model="model.username" dir="ltr" placeholder="e.g. mohsen" ng-disabled="progress" auto-focus required>
+						<div class="validation-inline signin-inline-error text-danger" ng-messages="signin.username.$error" ng-show="signin.$submitted || signin.username.$dirty">
+							<span ng-message="required">
+								نام کاربری را بنویسید.
+							</span>
+							<span ng-message="server">
+								<span ng-bind="validation.username"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="row form-group signin-password">
+					<label for="signin-password" class="col-form-label col-md-3 text-md-left signin-password-label">
+						رمز عبور
+					</label>
+					<div class="col-md-9 col-lg-6">
+						<input type="password" id="signin-password" name="password" class="form-control signin-password-input" ng-model="model.password" dir="ltr" ng-disabled="progress" required>
+						<div class="validation-inline signin-inline-error text-danger" ng-messages="signin.password.$error" ng-show="signin.$submitted || signin.password.$dirty">
+							<span ng-message="required">
+								رمز عبور را بنویسید.
+							</span>
+							<span ng-message="server">
+								<span ng-bind="validation.password"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="row form-group signin-rememberme">
+					<div class="col-md-3"></div>
+					<div class="col-md-9 col-lg-6">
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" id="signin-rememberme" name="rememberme" class="custom-control-input signin-rememberme-input" ng-model="model.rememberme" value="true" ng-disabled="progress">
+							<label class="custom-control-label signin-rememberme-label" for="signin-rememberme">
+								من را به خاطر بسپار
+							</label>
+						</div>
+					</div>
+				</div>
+				<hr class="page-separator signin-separator">
+				<div class="row form-group">
+					<div class="col-md-3"></div>
+					<div class="col-md-9 col-lg-6">
+						<button class="btn btn-lg btn-success signin-submit" ng-disabled="progress">
+							ورود به وب‌سایت
+						</button>
+						<div class="page-loading signin-loading" ng-show="progress">
+							<i class="fa fa-refresh fa-spin fa-fw"></i>
+							کمی‌صبر‌کنید...
+						</div>
+					</div>
+				</div>
+				<hr class="page-separator signin-separator">
+				<div class="row form-group mb-0">
+					<div class="col-md-3"></div>
+					<div class="col-md-9 col-lg-6">
+						<a href="@@users.signup" class="signin-signup">
+							اگر عضو وب‌سایت نیستید، ثبت‌نام کنید.
+						</a>
+						<br>
+						<a href="@@users.recoverypass" class="signin-recoverypass">
+							رمز عبور خود را فراموش کرده‌اید؟
+						</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html" />

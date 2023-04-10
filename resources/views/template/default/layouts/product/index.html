@@ -1,0 +1,692 @@
+<include name="layouts/header.html"/>
+
+<!--main-->
+<main class="product-container" itemprop="mainEntity" itemscope itemtype="http://schema.org/Product" product>
+    <div class="container">
+        <div class="product-context">
+            <include name="layouts/breadcrumb.html"/>
+            <div class="bg-white rounded shadow-sm p-25 p-sm-30 p-md-40">
+                <div class="product-header">
+                    <if terms="@@expiration.exists()">
+                        <if terms="@@expired">
+                            <div class="col-sm-12">
+                                <div class="product-expired">
+                                    <div class="alert alert-danger">
+                                        زمان خرید محصول به پایان رسیده و امکان ثبت سفارش آن وجود ندارد.
+                                    </div>
+                                </div>
+                            </div>
+                        </if>
+                        <if terms="@@expired.false()">
+                            <div class="mt-n25 mt-sm-n30 mx-n25 mx-sm-n30 mx-md-0 mt-md-10 mb-30" auto-show>
+                                <div class="product-expiration d-flex justify-content-center justify-content-md-between align-items-center p-10 py-sm-15 py-md-0 px-md-20 bg-light rounded">
+                                    <div class="product-expiration-title d-none d-md-flex align-items-center py-15">
+                                        <i class="fa fa-star text-orange ml-10 text-lg" aria-hidden="true"></i>
+                                        <span class="font-weight-bold">پیشنهاد ویژه</span>
+                                    </div>
+                                    <div class="my-md-n20" auto-show>
+                                        <div class="product-expiration-countdown justify-content-center d-flex text-center flex-row-reverse"
+                                             count-down="@@expiration.time.subtract.total.seconds" auto-show>
+                                            <div class="product-expiration-countdown-col p-2 p-xs-10 p-sm-15 mr-half mr-xs-2 mr-sm-10 bg-white rounded shadow-sm">
+                                                            <span class="product-expiration-countdown-number h4 font-weight-bold text-secondary mb-n2 mb-sm-nhalf d-block">
+                                                                {{days}}
+                                                            </span>
+                                                <span class="product-expiration-countdown-label text-muted text-xxs d-block">
+                                                                روز
+                                                            </span>
+                                            </div>
+                                            <div class="product-expiration-countdown-col p-2 p-xs-10 p-sm-15 mr-half mr-xs-2 mr-sm-10 bg-white rounded shadow-sm">
+                                                            <span class="product-expiration-countdown-number h4 font-weight-bold text-secondary mb-n2 mb-sm-nhalf d-block">
+                                                                {{hours}}
+                                                            </span>
+                                                <span class="product-expiration-countdown-label text-muted text-xxs d-block">
+                                                                ساعت
+                                                            </span>
+                                            </div>
+                                            <div class="product-expiration-countdown-col p-2 p-xs-10 p-sm-15 mr-half mr-xs-2 mr-sm-10 bg-white rounded shadow-sm">
+                                                            <span class="product-expiration-countdown-number h4 font-weight-bold text-secondary mb-n2 mb-sm-nhalf d-block">
+                                                                {{minutes}}
+                                                            </span>
+                                                <span class="product-expiration-countdown-label text-muted text-xxs d-block">
+                                                                دقیقه
+                                                            </span>
+                                            </div>
+                                            <div class="product-expiration-countdown-col p-2 p-xs-10 p-sm-15 bg-white rounded shadow-sm">
+                                                            <span class="product-expiration-countdown-number h4 font-weight-bold text-secondary mb-n2 mb-sm-nhalf d-block">
+                                                                {{seconds}}
+                                                            </span>
+                                                <span class="product-expiration-countdown-label text-muted text-xxs d-block">
+                                                                ثانیه
+                                                            </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </if>
+                    </if>
+                    <div class="row">
+                        <div class="col-lg-4" magnific>
+                            <if terms="@@image.exists()">
+                                <link itemprop="image" href="@@image">
+                            </if>
+                            <div class="product-image p-15">
+                                <a href="@@image" class="product-image-link"
+                                   magnific-preview="@@image?m=thumb&w=1280&h=800&q=high">
+                                    <img src='@@image.default("/site/resources/images/empty.jpg")?m=thumb&w=1280&h=800&q=high'
+                                         class="product-image-element" alt="@@title">
+                                </a>
+                            </div>
+                            <if terms='@@images.morethan("1")'>
+                                <div class="product-images owl-carousel"
+                                     options="{ navClass: ['product-images-prev', 'product-images-next'], responsive: { 992: { items: 3 }, 1200: { items: 4 } }, loop: false, navText: [], margin: 15, nav: true }">
+                                    <loop src='@@images.skip("1")'>
+                                        <a href="@@path" magnific-preview="@@path?m=thumb&w=1280&h=800&q=high"
+                                           class="product-images-link">
+                                            <img src="@@path?m=crop&w=120&h=80&q=high" class="product-images-item">
+                                        </a>
+                                    </loop>
+                                </div>
+                            </if>
+                            <div class="product-images-slider owl-carousel"
+                                 options="{ navClass: ['product-images-prev', 'product-images-next'], navText: [], nav: true, items: 1 }">
+                                <loop src="@@images">
+                                    <img src="@@path?m=thumb&w=1280&h=800&q=high" class="product-images-slider-item">
+                                </loop>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="product-left-container pt-30 pr-lg-20">
+                                <if terms="@@user.admin">
+                                    <a href="@@editurl"
+                                       class="btn btn-sm btn-edit edit-link edit-link-product product-edit">
+                                        <i class="fa fa-pencil"></i>
+                                        ویرایش محصول
+                                    </a>
+                                </if>
+                                <div class="product-category">
+                                    <loop src='@@categories.take("1")'>
+                                        @@title
+                                    </loop>
+                                </div>
+                                <div class="d-flex align-items-center flex-column flex-sm-row justify-content-between w-100 pt-10 pb-15">
+                                    <h1 class="product-title mb-0 pl-10 order-2 order-sm-1 ml-auto ml-sm-0" itemprop="name">
+                                        @@title
+                                    </h1>
+                                    <if terms="@@rating">
+                                        <div class="product-rating order-1 order-sm-2 mb-1 mb-sm-0 ml-auto ml-sm-0" eval="collect(@@id, @@rate, @@ratecount)"
+                                             product-rating auto-show>
+                                            <a role="button" class="product-rating-link" ng-click="submit(number)"
+                                               ng-focus="changeRate(number)" ng-mouseover="changeRate(number)"
+                                               ng-mouseleave="changeRate()" ng-repeat="number in [1,2,3,4,5]">
+                                                <i class="fa fa-star fa-flip-horizontal text-warning product-rating-link-icon"
+                                                   ng-class="{ 'fa-star-half-o': isHalf(number), 'fa-star-o': model.rate < number }"></i>
+                                            </a>
+                                            <span class="product-rating-info" ng-show="model.count">
+									<small class="text-muted">
+										از {{model.count}}
+									</small>
+								</span>
+                                        </div>
+                                    </if>
+
+                                </div>
+                                <if terms="@@caption.exists()">
+                                    <h4 class="product-caption" itemprop="alternateName">
+                                        @@caption
+                                    </h4>
+                                </if>
+                                <form name="addtocart" class="product-info" ng-submit="addtocart.$valid && submit()"
+                                      eval="collect(@@price.number, @@compareprice.number, @@discount)" add-to-cart
+                                      dynamic-form auto-show novalidate>
+                                    <div class="product-controls">
+                                        <div class="row mb-20">
+                                            <loop src="@@variants.attributes">
+                                                <div class="col-md-6 col-lg-8 col-xl-6">
+                                                    <div class="form-group product-attribute">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+														<span class="input-group-text product-attribute-text">
+															@@name
+														</span>
+                                                            </div>
+                                                            <select id="attribute-@@index" name="item@@index"
+                                                                    class="form-control product-attribute-input"
+                                                                    ng-model="model.attributes.item@@index"
+                                                                    ng-change="changeAttribute()" required>
+                                                                <option value="" ng-if="!model.attributes.item@@index"
+                                                                        ng-disabled="progress">
+                                                                    ---
+                                                                </option>
+                                                                <loop src="@@items">
+                                                                    <option value="@@name: @@item">
+                                                                        @@item
+                                                                    </option>
+                                                                </loop>
+                                                            </select>
+                                                        </div>
+                                                        <div class="validation-inline product-attribute-inline-error text-danger"
+                                                             ng-messages="addtocart.item@@index.$error"
+                                                             ng-show="addtocart.$submitted || addtocart.item@@index.$dirty">
+													<span ng-message="required">
+														@@name را انتخاب کنید.
+													</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </loop>
+                                            <div class="col-md-6 col-lg-8 col-xl-6 offset-lg-6 d-none">
+                                                <div class="form-group product-quantity">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+													<span class="input-group-text product-quantity-text">
+														تعداد
+													</span>
+                                                        </div>
+                                                        <input type="number" id="quantity"
+                                                               class="form-control product-quantity-input" min="1"
+                                                               max="1000" ng-model="model.quantity"
+                                                               ng-disabled="progress" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-8 col-xl-6 offset-lg-6 d-none">
+                                                <div class="form-group product-variant">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+													<span class="input-group-text product-variant-text">
+														نوع
+													</span>
+                                                        </div>
+                                                        <select id="variant" class="form-control product-variant-input"
+                                                                ng-disabled="progress">
+                                                            <loop src="@@variants">
+                                                                <option value="@@id" data-stock="@@stock"
+                                                                        data-price="@@price.number"
+                                                                        data-compare-price="@@compareprice.number"
+                                                                        data-discount="@@discount" product-variant>
+                                                                    @@title
+                                                                </option>
+                                                            </loop>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-price-container">
+                                            <if terms="@@outofstock.false()">
+                                                <if terms="@@compareprice.exists">
+                                                    <h5 class="product-compare-price text-normal"
+                                                        ng-show="getComparePrice()"
+                                                        ng-bind="getComparePrice()|number">
+                                                        @@compareprice
+                                                    </h5>
+                                                </if>
+                                                <if terms="@@price.exists">
+                                                    <h5 class="product-price" itemprop="offers" itemscope
+                                                        itemtype="http://schema.org/Offer">
+                                                        <meta itemprop="priceCurrency" content="IRR">
+                                                        <meta itemprop="price" content="@@price.number.rials()">
+                                                        <span ng-bind="getPrice()|number">@@price</span>
+                                                        تومان
+                                                    </h5>
+                                                </if>
+                                                <if terms="@@discount.exists">
+                                                    <div class="product-discount-holder text-xxs d-inline-flex align-items-center mr-half text-white bg-red" ng-show="getDiscount()">
+                                                        <h5 class="product-discount text-xxs mb-0"
+                                                            ng-bind="getDiscount() + '٪'">
+                                                        </h5>
+                                                        <span class="px-half">تخفیف</span>
+                                                    </div>
+                                                </if>
+                                            </if>
+                                            <div class="product-outofstock-message d-none alert alert-warning"
+                                                 ng-class="{ 'd-block': outofstock() }">
+                                                محصول مورد نظر موجود نمی‌باشد.
+                                            </div>
+                                        </div>
+                                        <div class="product-buttons">
+                                            <scope name="product-buttons">
+                                                <include name="layouts/validation.html"/>
+                                            </scope>
+                                            <if terms="@@inquiry.false() && @@available">
+                                                <button class="btn btn-green"
+                                                        ng-disabled="outofstock() || progress">
+                                                    <i class="fa fa-fw fa-shopping-cart"></i>
+                                                    افزودن به سبدخرید
+                                                </button>
+                                            </if>
+                                            <if terms="@@inquiry">
+                                                <button type="button"
+                                                        class="btn btn-primary text-white yellow-shadow product-inquiry"
+                                                        data-toggle="modal" data-target="#product-inquiry-modal"
+                                                        ng-disabled="progress">
+                                                    <i class="fa fa-fw fa-phone-square"></i>
+                                                    استعلام محصول
+                                                </button>
+                                            </if>
+                                            <if terms="@@user.exists()">
+                                                <button type="button"
+                                                        class="btn btn-link text-muted product-addtowishlist"
+                                                        ng-click="submit()" eval="collect(@@id)" ng-disabled="progress"
+                                                        add-to-wishlist>
+                                                    <i class="fa fa-fw fa-heart-o"></i>
+                                                    افزودن به علاقه‌مندی
+                                                </button>
+                                            </if>
+                                            <if terms="@@user.empty()">
+                                                <button type="button"
+                                                        class="btn btn-link product-addtowishlist text-muted"
+                                                        onclick="alert('این امکان فقط برای کاربران در دسترس است.')">
+                                                    <i class="fa fa-fw fa-heart-o"></i>
+                                                    افزودن به علاقه‌مندی
+                                                </button>
+                                            </if>
+                                            <a href="@@compareurl" class="btn btn-link text-muted product-compare">
+                                                <i class="fa fa-fw fa-balance-scale ml-1"></i>
+                                                مقایسه
+                                            </a>
+                                            <div class="product-buttons-loading" ng-show="progress">
+                                                <i class="fa fa-refresh fa-spin fa-fw"></i>
+                                                کمی صبر کنید...
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <if terms="@@description.exists()">
+                    <div class="product-description pt-25 pt-sm-30 pt-md-40 mt-25 mt-sm-30 mt-md-40 border-top">
+                        <p class="product-description-content" itemprop="description">
+                            @@description
+                        </p>
+                    </div>
+                </if>
+            </div>
+
+            <widget type="contentlist" name="home:features" section="ابزارک‌های عمومی">
+                <div class="mt-15 rounded bg-white shadow-sm px-30 px-sm-40 px-md-50 px-xl-100 pt-30">
+                    <if terms="@@user.admin">
+                        <div class="mb-30 text-center">
+                            <a href="@@addurl" class="btn btn-sm btn-create add-link add-link-widget">
+                                <i class="fa fa-pencil"></i>
+                                اضافه کردن
+                            </a>
+                            <a href="@@editurl"
+                               class="btn btn-sm btn-edit edit-link edit-link-widget inner-edit-placer">
+                                <i class="fa fa-pencil"></i>
+                                تنظیمات ابزارک
+                            </a>
+                        </div>
+                    </if>
+                    <div class="row align-items-center justify-content-lg-center">
+                        <loop src="@@items">
+                            <div class="col-12 col-sm-6 col-lg-3 mb-30">
+                                <div class="d-flex align-items-center">
+                                    <img src='@@image.default("/site/resources/images/empty.jpg")?m=thumb&w=54&h=54&q=high'
+                                         class="ml-15"
+                                         alt="@@title">
+                                    <div>
+                                        <h3 class="text-xs mb-0">@@title</h3>
+                                        <h6 class="text-xxs text-muted font-weight-normal mb-0">@@slogan</h6>
+                                    </div>
+                                </div>
+                                <if terms="@@user.admin">
+                                    <a href="@@editurl"
+                                       class="btn btn-sm btn-edit edit-link edit-link-widget text-xxs mt-10">
+                                        <i class="fa fa-pencil"></i>
+                                        ویرایش
+                                    </a>
+                                </if>
+                            </div>
+                        </loop>
+                    </div>
+                </div>
+            </widget>
+
+            <widget type="products" name="products:relates" terms="@@items.any()">
+                <div class="product-relates mt-15 bg-white rounded shadow-sm">
+
+                    <h4 class="product-relates-title text-lg font-weight-bold border-bottom py-15 py-sm-20 mb-0 px-25">
+                        @@title
+                    </h4>
+                    <div class="product-relates-items has-nav py-20 py-sm-25 p-md-30">
+                        <div class="owl-carousel"
+                             options="{ items: 4, autoplay: true, responsive:{ 0:{ items: 2 }, 576: { items: 3 }, 992: { items: 4 }, 1200: { items: 5 } }  }">
+                            <loop src="@@items">
+
+                                <div class="product-relates-item m-10 m-sm-15 rounded d-flex flex-column justify-content-center align-items-center">
+                                    <a href="@@url" class="product-relates-item-image">
+                                        <img src='@@image.default("/site/resources/images/empty.png")?m=crop&w=320&h=240&q=high'
+                                             class="img-fluid product-relates-item-image-element">
+                                    </a>
+                                    <h5 class="product-relates-item-title">
+                                        <a href="@@url" class="product-relates-item-link text-center">
+                                            @@title
+                                        </a>
+                                    </h5>
+                                    <if terms="@@price.exists">
+											<span class="product-relates-item-price">
+												@@price تومان
+											</span>
+                                    </if>
+                                    <if terms="@@priceprice.exists">
+											<span class="product-relates-item-compare-price">
+												@@compareprice تومان
+											</span>
+                                    </if>
+                                </div>
+                            </loop>
+                        </div>
+                    </div>
+                    <if terms="@@user.admin">
+                        <a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget">
+                            <i class="fa fa-pencil"></i>
+                            ویرایش تنظیمات
+                        </a>
+                    </if>
+                </div>
+            </widget>
+            <div class="product-details" data-tabs="auto">
+                <ul class="nav nav-tabs product-details-tabs p-10 mx-n10 mt-10 border-0"
+                    role="tablist">
+                    <loop src="@@contents">
+                        <li class="nav-item product-details-tab">
+                            <a role="button" class="nav-link border-0 rounded btn shadow-sm ml-10 product-details-tab-link" data-toggle="tab"
+                               data-target="#product-content-@@index">
+                                @@name
+                            </a>
+                        </li>
+                    </loop>
+                    <if terms="@@fields.any()">
+                        <li class="nav-item product-details-tab">
+                            <a role="button" class="nav-link border-0 rounded btn shadow-sm ml-10 product-details-tab-link" data-toggle="tab"
+                               data-target="#product-fields">
+                                مشخصات
+                            </a>
+                        </li>
+                    </if>
+                    <if terms="@@comments.enabled || @@comments.any()">
+                        <li class="nav-item product-details-tab">
+                            <a role="button" class="nav-link border-0 rounded btn shadow-sm ml-10 product-details-tab-link" data-toggle="tab"
+                               data-target="#product-comments">
+                                دیدگاه‌ها
+                            </a>
+                        </li>
+                    </if>
+                </ul>
+                <div class="tab-content p-25 p-sm-30 p-md-40 bg-white rounded shadow-sm">
+                    <loop src="@@contents">
+                        <div class="tab-pane" id="product-content-@@index">
+                            <div class="product-content figure-content">
+                                @@value
+                            </div>
+                        </div>
+                    </loop>
+                    <if terms="@@fields.any()">
+                        <div class="tab-pane" id="product-fields">
+                            <div class="product-fields">
+                                <loop src="@@fields">
+                                    <div class="row no-gutters product-field">
+                                        <div class="col-lg-3">
+                                            <h6 class="product-field-name">
+                                                @@name
+                                            </h6>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <loop src="@@values">
+                                                <div class="product-field-value">
+                                                    @@value
+                                                </div>
+                                            </loop>
+                                        </div>
+                                    </div>
+                                </loop>
+                            </div>
+                        </div>
+                    </if>
+                    <div class="tab-pane" id="product-comments">
+                        <div class="product-comments">
+                            <div eval="collect(@@id)" product-commenting auto-show>
+                                <if terms="@@comments.any()">
+                                    <div class="product-comments pb-35 pb-sm-45 pb-md-60" id="comments">
+                                        <loop src="@@comments" recursive="@@subset">
+                                            <div class="product-comment post-full-comment" id="comment-@@id"
+                                                 itemprop="comment" itemscope itemtype="http://schema.org/Comment">
+                                                <div class="product-comment-inner rounded">
+                                                    <div class="product-comment-header p-20 pb-sm-25 px-sm-30 pt-sm-30">
+                                                        <div class="row mx-n10 align-items-center">
+                                                            <div class="col-auto d-none d-sm-block px-10 post-plain-comment-avatar">
+                                                                <img src="@@avatar.get?m=crop&w=60&h=60&q=high"
+                                                                     class="product-comment-avatar-image post-plain-comment-avatar-image">
+                                                            </div>
+                                                            <div class="col px-10">
+                                                                <div class="d-flex align-items-center mt-1">
+                                                                    <h5 class="product-comment-author post-full-comment-author text-lg mb-0"
+                                                                        itemprop="author"
+                                                                        itemscope itemtype="http://schema.org/Person">
+                                                                        <if terms="@@avatar.exists()">
+                                                                            <link itemprop="image" href="@@avatar">
+                                                                        </if>
+                                                                        <meta itemprop="url" content="@@website">
+                                                                        <if terms="@@website.empty()">
+                                                                <span class="product-comment-name post-full-comment-name"
+                                                                      itemprop="name">
+                                                                    @@name.default("ناشناس")
+                                                                </span>
+                                                                        </if>
+                                                                        <if terms="@@website.exists()">
+                                                                            <a href="@@website" rel="nofollow"
+                                                                               target="_blank"
+                                                                               class="product-comment-website post-full-comment-website text-secondary">
+                                                                    <span itemprop="name">
+                                                                        @@name.default("ناشناس")
+                                                                    </span>
+                                                                            </a>
+                                                                        </if>
+                                                                    </h5>
+                                                                    <a href="javascript:;"
+                                                                       class="text-primary mr-10 product-comment-reply post-full-comment-reply"
+                                                                       ng-click="reply(@@id)">
+                                                                        <i class="fa fa-reply"></i>
+                                                                    </a>
+                                                                </div>
+
+                                                                <span class="product-comment-time post-full-comment-time text-muted d-block text-xxs">
+                                                            <meta itemprop="dateCreated" content="@@date.universal">
+                                                            @@time.subtract
+                                                        </span>
+                                                            </div>
+                                                            <div class="col-auto px-10">
+
+                                                                <if terms="@@rate.exists()">
+                                                                    <div class="product-comment-rate text-warning d-flex ml-n1">
+                                                                        <span ng-repeat="number in [1,2,3,4,5]"
+                                                                              class="ml-1">
+                                                                            <i class="fa fa-star product-comment-rate-icon d-block"
+                                                                               ng-class="{ 'fa-star-o': number > @@rate }"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </if>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="p-20 pt-sm-25 px-sm-30 pb-sm-30 mb-0 text-xs product-comment-body post-full-comment-body break-word"
+                                                       itemprop="text">
+                                                        @@body
+                                                    </p>
+                                                </div>
+                                                <if terms="@@subset.any()">
+                                                    <div class="product-comment-subset post-full-comment-subset pr-20 pr-md-30 pr-lg-40 pb-half pb-md-2">
+                                                        @@recursive
+                                                    </div>
+                                                </if>
+                                            </div>
+                                        </loop>
+                                    </div>
+                                </if>
+                                <if terms="@@comments.enabled">
+                                    <div class="product-commenting">
+                                        <h3 class="product-commenting-title mb-15 mb-sm-20 mb-md-25">
+                                            دیدگاه خود را بنویسید
+                                        </h3>
+                                        <form name="commenting" class="product-commenting-form"
+                                              ng-submit="commenting.$valid && submit()" dynamic-form novalidate>
+                                            <scope name="product-commenting">
+                                                <include name="layouts/validation.html"/>
+                                            </scope>
+                                            <div class="alert alert-success product-commenting-succeed"
+                                                 ng-show="succeed">
+                                                <span ng-bind="succeed.description"></span>
+                                            </div>
+                                            <div class="product-commenting-reply-info" ng-show="isreply"
+                                                 ng-click="focusComment()">
+                                                <div class="alert alert-warning">
+                                                    این دیدگاه به عنوان پاسخ شما به دیدگاهی دیگر ارسال خواهد شد. برای
+                                                    صرف نظر از ارسال این پاسخ، بر روی گزینه‌ی
+                                                    <u>انصراف</u> کلیک کنید.
+                                                </div>
+                                            </div>
+                                            <div class="row mx-n2">
+                                                <if terms="@@user.exists()">
+                                                    <div class="col-12 px-2 mb-15 text-xs">
+                                                        دیدگاه شما از طرف
+                                                        <mark>@@user</mark>
+                                                        ارسال خواهد شد.
+                                                    </div>
+                                                </if>
+                                                <if terms="@@user.empty()">
+                                                    <div class="col-12 col-sm-6 col-lg-3 px-2">
+                                                        <div class="form-group product-commenting-name">
+                                                            <input type="text" id="productcomment-name" name="name"
+                                                                   class="form-control product-commenting-name-input text-xs"
+                                                                   ng-model="model.name" ng-disabled="progress"
+                                                                   placeholder="نام و نام خانوادگی">
+                                                            <div class="validation-inline product-commenting-inline-error text-danger"
+                                                                 ng-messages="commenting.name.$error"
+                                                                 ng-show="commenting.$submitted || commenting.name.$dirty">
+																<span ng-message="server">
+																	<span ng-bind="validation.name"></span>
+																</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-lg-3 px-2">
+                                                        <div class="form-group product-commenting-email">
+                                                            <input type="text" id="productcomment-email" name="email"
+                                                                   class="form-control product-commenting-email-input text-xs"
+                                                                   ng-model="model.email"
+                                                                   ng-disabled="progress" placeholder="پست الکترونیکی">
+                                                            <div class="validation-inline product-commenting-inline-error text-danger"
+                                                                 ng-messages="commenting.email.$error"
+                                                                 ng-show="commenting.$submitted || commenting.email.$dirty">
+																<span ng-message="server">
+																	<span ng-bind="validation.email"></span>
+																</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-lg-3 px-2">
+                                                        <div class="form-group product-commenting-website">
+                                                            <input type="text" id="productcomment-website"
+                                                                   name="website"
+                                                                   class="form-control product-commenting-website-input text-xs"
+                                                                   ng-model="model.website"
+                                                                   ng-disabled="progress" placeholder="آدرس وب‌سایت">
+                                                            <div class="validation-inline product-commenting-inline-error text-danger"
+                                                                 ng-messages="commenting.website.$error"
+                                                                 ng-show="commenting.$submitted || commenting.website.$dirty">
+																<span ng-message="server">
+																	<span ng-bind="validation.website"></span>
+																</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </if>
+                                                <if terms="@@rating">
+                                                    <div class="col-12 col-sm-6 col-lg-3 px-2">
+                                                        <div class="form-group product-commenting-rate">
+                                                            <select id="productcomment-rate" name="rate"
+                                                                    class="form-control product-commenting-rate-input text-xs"
+                                                                    ng-model="model.rate" ng-disabled="progress">
+                                                                <option ng-value="">امتیاز شما به محصول</option>
+                                                                <option ng-value="1">یک ستاره</option>
+                                                                <option ng-value="2">دو ستاره</option>
+                                                                <option ng-value="3">سه ستاره</option>
+                                                                <option ng-value="4">چهار ستاره</option>
+                                                                <option ng-value="5">پنج ستاره</option>
+                                                            </select>
+                                                            <div class="validation-inline product-commenting-inline-error text-danger"
+                                                                 ng-messages="commenting.rate.$error"
+                                                                 ng-show="commenting.$submitted || commenting.rate.$dirty">
+																<span ng-message="server">
+																	<span ng-bind="validation.rate"></span>
+																</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </if>
+
+
+                                                <div class="col-12 px-2">
+                                                    <div class="form-group product-commenting-body">
+                                                        <textarea id="productcomment-body" name="body"
+                                                                  class="form-control product-commenting-body-input text-xs"
+                                                                  rows="6" placeholder="بنویسید..."
+                                                                  ng-model="model.body" ng-disabled="progress"
+                                                                  required></textarea>
+                                                        <div class="validation-inline product-commenting-inline-error text-danger"
+                                                             ng-messages="commenting.body.$error"
+                                                             ng-show="commenting.$submitted || commenting.body.$dirty">
+															<span ng-message="required">
+																دیدگاه خود را بنویسید.
+															</span>
+                                                            <span ng-message="server">
+																<span ng-bind="validation.body"></span>
+															</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary product-commenting-submit"
+                                                    ng-disabled="progress" ng-hide="isreply">
+                                                ارسال دیدگاه
+                                            </button>
+                                            <button class="btn btn-primary product-commenting-submit"
+                                                    ng-disabled="progress" ng-show="isreply">
+                                                ارسال پاسخ
+                                            </button>
+                                            <button type="button" class="btn btn-link product-commenting-reset"
+                                                    ng-disabled="progress" ng-show="commenting.$dirty"
+                                                    ng-click="reset()"
+                                                    click-confirm="همه‌ی اطلاعات نوشته شده، حذف می‌شوند. آیا مطمئن هستید؟">
+                                                انصراف
+                                            </button>
+                                            <div class="product-commenting-loading" ng-show="progress">
+                                                <i class="fa fa-refresh fa-spin fa-fw"></i>
+                                                کمی صبر کنید...
+                                            </div>
+                                        </form>
+                                    </div>
+                                </if>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!--/main-->
+
+<if terms="@@inquiry.false()">
+    <include name="layouts/product/partials/addtocart.html"/>
+</if>
+<if terms="@@inquiry">
+    <include name="layouts/product/partials/inquiry.html"/>
+</if>
+
+<include name="layouts/footer.html"/>                                                        

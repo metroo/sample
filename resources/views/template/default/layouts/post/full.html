@@ -1,0 +1,339 @@
+<include name="layouts/header.html"/>
+
+<!--main-->
+
+<main class="post-container post-full-container" itemprop="mainEntity" itemscope
+      itemtype="http://schema.org/BlogPosting" post>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12 pl-lg-10">
+                <div class="post-context post-full-context">
+                    <include name="layouts/breadcrumb.html"/>
+                    <if terms="@@user.admin">
+                        <a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-post post-full-edit">
+                            <i class="fa fa-pencil"></i>
+                            ویرایش نوشته
+                        </a>
+                    </if>
+                    <div class="bg-white shadow-sm rounded">
+                        <if terms="@@image.exists()">
+                            <div class="post-image post-full-image">
+                                <img src='@@image.default("/site/resources/images/empty.jpg")?m=thumb&w=800&h=600&q=high'
+                                     class="img-fluid center-block post-image-element post-full-image-element rounded-top"
+                                     alt="@@title" itemprop="image">
+                            </div>
+                        </if>
+                        <div class="p-25 p-sm-30 p-md-40">
+                            <if terms="@@categories.any()">
+                                <div class="post-categories mb-1 post-full-categories post-meta post-full-meta">
+                                    <loop src="@@categories">
+                                        <a href="@@url" class="post-category post-full-category" title="@@metatitle">
+                                            @@title
+                                        </a>
+                                    </loop>
+                                </div>
+                            </if>
+                            <h1 class="post-title post-full-title mb-20" itemprop="headline">
+                                @@title
+                            </h1>
+                            <div class="d-flex align-items-center justify-content-between post-meta post-full-meta mb-4">
+                                <if terms="@@author.exists()">
+                                    <div class="post-author post-full-author" itemprop="author" itemscope
+                                         itemtype="http://schema.org/Person">
+                                        <a href="/site/posts?author=@@author.id"
+                                           class="post-author-link post-full-author-link"
+                                           itemprop="url">
+                                            <img src='@@author.avatar.default("/site/resources/avatars/empty.png")?m=crop&h=34&w=34'
+                                                 class="rounded-circle ml-10" alt="@@author.name.default('ناشناس')"/>
+                                            <span itemprop="name">@@author.name.default("ناشناس")</span>
+                                        </a>
+                                        <if terms="@@author.avatar.exists()">
+                                            <link itemprop="image" href="@@author.avatar">
+                                        </if>
+                                    </div>
+                                </if>
+                                <div class="post-date post-full-date">
+                                    <meta itemprop="datePublished dateModified" content="@@date.universal">
+                                    @@date
+                                </div>
+                            </div>
+
+                            <div class="post-content post-full-content figure-content break-word"
+                                 itemprop="articleBody">
+                                @@content
+                            </div>
+
+                        </div>
+                        <div class="post-sharing post-full-sharing d-flex align-items-center py-20 px-25 px-sm-30 px-md-40 border-top justify-content-sm-between flex-column flex-sm-row">
+                            <span class="post-sharing-title font-weight-bold align-middle text-secondary ml-auto ml-sm-0">اشتراک گذاری</span>
+                            <div class="d-flex flex-row-reverse ml-auto ml-sm-0 mt-2 mt-sm-0">
+                                <a href="https://www.facebook.com/share.php?u=@@config.domain.uri@@url"
+                                   class="post-sharing-facebook post-full-sharing-facebook rounded mr-2"
+                                   target="_blank">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                                <a href="https://twitter.com/home?status=@@config.domain.uri@@url"
+                                   class="post-sharing-twitter post-full-sharing-twitter rounded mr-2" target="_blank">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=@@config.domain.uri@@url"
+                                   class="post-sharing-linkedin post-full-sharing-linkedin rounded mr-2"
+                                   target="_blank">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                                <a href="https://plus.google.com/share?url=@@config.domain.uri@@url"
+                                   class="post-sharing-googleplus post-full-sharing-googleplus rounded mr-2"
+                                   target="_blank">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>
+                                <a href="https://pinterest.com/pin/create/link/?url=@@config.domain.uri@@url"
+                                   class="post-sharing-pinterest post-full-sharing-pinterest rounded" target="_blank">
+                                    <i class="fa fa-pinterest-p"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <widget type="posts" name="blog:relates" terms="@@items.any()" section="وبلاگ">
+                            <div class="post-relates post-full-relates p-25 p-sm-30 p-md-40 border-top">
+                                <h4 class="post-relates-title post-full-relates-title font-weight-bold mb-15 mb-sm-20 mb-md-25">
+                                    @@title
+                                </h4>
+                                <ul class="post-relates-list post-full-relates-list row m-nhalf list-unstyled pr-0">
+                                    <loop src="@@items">
+                                        <li class="col-12 col-md-6 p-half post-relates-item post-full-relates-item">
+                                            <a href="@@url"
+                                               class="p-15 d-flex align-items-center post-relates-link post-full-relates-link rounded"
+                                               title="@@metatitle">
+                                                <div class="ml-15">
+                                                    <img src='@@image.default("/site/resources/images/empty.jpg")?m=crop&w=54&h=54&q=high'
+                                                         class="rounded-circle"
+                                                         alt="@@title" itemprop="image">
+                                                </div>
+                                                <span class="text-xs">@@title</span>
+                                            </a>
+                                        </li>
+                                    </loop>
+                                </ul>
+                                <if terms="@@user.admin">
+                                    <a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget mt-4">
+                                        <i class="fa fa-pencil"></i>
+                                        ویرایش تنظیمات
+                                    </a>
+                                </if>
+                            </div>
+                        </widget>
+                        <if terms="@@tags.any()">
+                            <div class="p-25 p-sm-30 p-md-40 border-top">
+                                <div class="post-tags post-full-tags post-meta post-full-meta mt-nhalf">
+                                    <span class="post-tags-title text-sm d-inline-block align-middle ml-15 mt-half text-secondary">برچسب ها</span>
+                                    <loop src="@@tags">
+                                        <a href="@@url"
+                                           class="post-tag post-full-tag bg-light d-inline-block align-middle px-10 py-1 rounded ml-half mt-half"
+                                           title="@@metatitle">
+                                            @@title
+                                        </a>
+                                    </loop>
+                                </div>
+                            </div>
+                        </if>
+                    </div>
+                    <div eval="collect(@@id)" post-commenting auto-show>
+                        <if terms="@@comments.any()">
+                            <div class="post-comments post-full-comments" id="comments">
+                                <h3 class="post-comments-title post-full-comments-title mt-40 mb-20">
+                                    دیدگاه‌های بازدیدکنندگان
+                                </h3>
+                                <loop src="@@comments" recursive="@@subset">
+                                    <div class="post-comment post-full-comment" id="comment-@@id"
+                                         itemprop="comment" itemscope itemtype="http://schema.org/Comment">
+                                        <div class="shadow-sm rounded bg-white">
+                                            <div class="border-bottom p-20 pb-sm-25 px-sm-30 pt-sm-30">
+                                                <div class="row mx-n10 align-items-center">
+                                                    <div class="col-auto d-none d-sm-block px-10 post-plain-comment-avatar">
+                                                        <img src="@@avatar.get?m=crop&w=60&h=60&q=high"
+                                                             class="post-comment-avatar-image post-plain-comment-avatar-image">
+                                                    </div>
+                                                    <div class="col px-10">
+                                                        <h5 class="post-comment-author post-full-comment-author text-lg mb-0 mt-1"
+                                                            itemprop="author"
+                                                            itemscope itemtype="http://schema.org/Person">
+                                                            <if terms="@@avatar.exists()">
+                                                                <link itemprop="image" href="@@avatar">
+                                                            </if>
+                                                            <meta itemprop="url" content="@@website">
+                                                            <if terms="@@website.empty()">
+                                                                <span class="post-comment-name post-full-comment-name"
+                                                                      itemprop="name">
+                                                                    @@name.default("ناشناس")
+                                                                </span>
+                                                            </if>
+                                                            <if terms="@@website.exists()">
+                                                                <a href="@@website" rel="nofollow" target="_blank"
+                                                                   class="post-comment-website post-full-comment-website text-secondary">
+                                                                    <span itemprop="name">
+                                                                        @@name.default("ناشناس")
+                                                                    </span>
+                                                                </a>
+                                                            </if>
+                                                        </h5>
+                                                        <span class="post-comment-time post-full-comment-time text-muted d-block text-xxs">
+                                                            <meta itemprop="dateCreated" content="@@date.universal">
+                                                            @@time.subtract
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-auto px-10">
+                                                        <a href="javascript:;"
+                                                           class="btn btn-sm btn-light d-flex align-items-center post-comment-reply post-full-comment-reply"
+                                                           ng-click="reply(@@id)">
+                                                            <i class="fa fa-reply ml-half"></i>
+                                                            <span class="text-xxs">ارسال پاسخ</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="p-20 pt-sm-25 px-sm-30 pb-sm-30 mb-0 text-xs post-comment-body post-full-comment-body break-word"
+                                               itemprop="text">
+                                                @@body
+                                            </p>
+                                        </div>
+                                        <if terms="@@subset.any()">
+                                            <div class="post-comment-subset post-full-comment-subset pr-20 pr-md-30 pr-lg-40 pb-half pb-md-2">
+                                                @@recursive
+                                            </div>
+                                        </if>
+                                    </div>
+                                </loop>
+                            </div>
+                        </if>
+                        <if terms="@@comments.enabled">
+                            <div class="post-commenting post-full-commenting">
+                                <h3 class="post-commenting-title post-full-commenting-title mt-40 mb-20">
+                                    دیدگاه خود را بنویسید
+                                </h3>
+                                <form name="commenting"
+                                      class="post-commenting-form post-full-commenting-form p-20 p-sm-25 p-md-30 shadow-sm bg-white rounded"
+                                      ng-submit="commenting.$valid && submit()" dynamic-form novalidate>
+                                    <scope name="post-full-commenting">
+                                        <include name="layouts/validation.html"/>
+                                    </scope>
+                                    <div class="alert alert-success post-commenting-succeed post-full-commenting-succeed"
+                                         ng-show="succeed">
+                                        <span ng-bind="succeed.description"></span>
+                                    </div>
+                                    <div class="post-commenting-reply-info post-full-commenting-reply-info"
+                                         ng-show="isreply" ng-click="focusComment()">
+                                        <div class="alert alert-warning">
+                                            این دیدگاه به عنوان پاسخ شما به دیدگاهی دیگر ارسال خواهد شد. برای صرف نظر از
+                                            ارسال این پاسخ، بر روی گزینه‌ی
+                                            <u>انصراف</u> کلیک کنید.
+                                        </div>
+                                    </div>
+                                    <div class="row mx-n2">
+                                        <if terms="@@user.exists()">
+                                            <div class="col-12 px-2 mb-15 text-xs">
+                                                دیدگاه شما از طرف
+                                                <mark>@@user</mark>
+                                                ارسال خواهد شد.
+                                            </div>
+                                        </if>
+                                        <if terms="@@user.empty()">
+                                            <div class="col-12 col-sm-4 px-2">
+                                                <div class="form-group post-commenting-name post-full-commenting-name">
+                                                    <input placeholder="نام و نام خانوادگی" type="text"
+                                                           id="postcomment-name" name="name"
+                                                           class="form-control post-commenting-name-input post-full-commenting-name-input text-xs"
+                                                           ng-model="model.name" ng-disabled="progress">
+                                                    <div class="validation-inline post-full-commenting-inline-error text-danger"
+                                                         ng-messages="commenting.name.$error"
+                                                         ng-show="commenting.$submitted || commenting.name.$dirty">
+														<span ng-message="server">
+															<span ng-bind="validation.name"></span>
+														</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-sm-4 px-2">
+                                                <div class="form-group post-commenting-email post-full-commenting-email">
+                                                    <input placeholder="پست الکترونیکی" type="text"
+                                                           id="postcomment-email" name="email"
+                                                           class="form-control post-commenting-email-input post-full-commenting-email-input text-xs"
+                                                           ng-model="model.email" ng-disabled="progress">
+                                                    <div class="validation-inline post-full-commenting-inline-error text-danger"
+                                                         ng-messages="commenting.email.$error"
+                                                         ng-show="commenting.$submitted || commenting.email.$dirty">
+														<span ng-message="server">
+															<span ng-bind="validation.email"></span>
+														</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-sm-4 px-2">
+                                                <div class="form-group post-commenting-website post-full-commenting-website">
+                                                    <input placeholder="آدرس وب‌سایت" type="text"
+                                                           id="postcomment-website" name="website"
+                                                           class="form-control post-commenting-website-input post-full-commenting-website-input text-xs"
+                                                           ng-model="model.website" ng-disabled="progress">
+                                                    <div class="validation-inline post-full-commenting-inline-error text-danger"
+                                                         ng-messages="commenting.website.$error"
+                                                         ng-show="commenting.$submitted || commenting.website.$dirty">
+														<span ng-message="server">
+															<span ng-bind="validation.website"></span>
+														</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </if>
+                                        <div class="col-12 px-2">
+                                            <div class="form-group post-commenting-body post-full-commenting-body">
+                                                <textarea id="postcomment-body" name="body"
+                                                          class="form-control post-commenting-body-input post-full-commenting-body-input text-xs"
+                                                          rows="6" placeholder="بنویسید..." ng-model="model.body"
+                                                          ng-disabled="progress" required></textarea>
+                                                <div class="validation-inline post-full-commenting-inline-error text-danger"
+                                                     ng-messages="commenting.body.$error"
+                                                     ng-show="commenting.$submitted || commenting.body.$dirty">
+													<span ng-message="required">
+														دیدگاه خود را بنویسید.
+													</span>
+                                                    <span ng-message="server">
+														<span ng-bind="validation.body"></span>
+													</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary post-commenting-submit post-full-commenting-submit"
+                                            ng-disabled="progress" ng-hide="isreply">
+                                        ارسال دیدگاه
+                                    </button>
+                                    <button class="btn btn-primary post-commenting-submit post-full-commenting-submit"
+                                            ng-disabled="progress" ng-show="isreply">
+                                        ارسال پاسخ
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-link post-commenting-reset post-full-commenting-reset"
+                                            ng-disabled="progress" ng-show="commenting.$dirty" ng-click="reset()"
+                                            click-confirm="همه‌ی اطلاعات نوشته شده، حذف می‌شوند. آیا مطمئن هستید؟">
+                                        انصراف
+                                    </button>
+                                    <div class="post-commenting-loading post-full-commenting-loading"
+                                         ng-show="progress">
+                                        <i class="fa fa-refresh fa-spin fa-fw"></i>
+                                        کمی صبر کنید...
+                                    </div>
+                                </form>
+                            </div>
+                        </if>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 pr-lg-10">
+                <div class="blog-sidebar blog-full-sidebar">
+                    <include name="layouts/pages/blog/partials/sidebar.html"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html"/>

@@ -1,0 +1,27 @@
+<if terms="@@pager.exists()">
+	<nav role="navigation">
+		<ul class="pagination mb-0">
+			<if terms="@@pager.previous.exists()">
+				<li class="page-item">
+					<a href="@@pager.previous.url" class="page-link rounded shadow-sm">
+						<i class="fa fa-angle-right"></i>
+					</a>
+				</li>
+			</if>
+			<loop src="@@pager">
+				<li class="page-item @@active">
+					<a href="@@url" class="page-link rounded shadow-sm">
+						@@number
+					</a>
+				</li>
+			</loop>
+			<if terms="@@pager.next.exists()">
+				<li class="page-item">
+					<a href="@@pager.next.url" class="page-link rounded shadow-sm">
+						<i class="fa fa-angle-left"></i>
+					</a>
+				</li>
+			</if>
+		</ul>
+	</nav>
+</if>

@@ -1,0 +1,186 @@
+<include name="layouts/header.html" />
+<!--main-->
+<main class="page-container cart-auth-container">
+    <div class="container">
+        <div class="page-context cart-auth-context bg-white rounded shadow-sm p-25 p-sm-30 p-md-35 p-lg-40">
+            <h1 class="page-title cart-auth-title">
+                @@title
+            </h1>
+            <div class="page-description cart-auth-description">
+                ابتدا باید وارد حساب کاربری خود شوید و در صورتی که هنوز عضو وب‌سایت نیستید، گزینه‌ی ثبت‌نام را انتخاب کنید.
+            </div>
+            <hr class="page-separator cart-auth-separator">
+            <form name="auth" class="cart-auth-form" ng-submit="auth.$valid && submit()" eval="collect('@@url')" ng-switch="model.mode" cart-auth dynamic-form auto-show novalidate>
+                <div class="alert alert-success cart-auth-succeed" ng-show="succeed">
+                    <span ng-bind="succeed.description"></span>
+                </div>
+                <scope name="cart-auth">
+                    <include name="layouts/validation.html" />
+                </scope>
+                <div ng-hide="succeed">
+                    <div class="row form-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9 col-lg-6">
+                            <div class="cart-auth-mode">
+                                <h4 class="cart-auth-mode-question">
+                                    <i class="fa fa-user"></i>
+                                    آیا عضو وب‌سایت هستید؟
+                                </h4>
+                                <div class="custom-control custom-radio cart-auth-mode-signup my-2">
+                                    <input type="radio" id="cart-auth-mode-signup" name="mode" value="signup" class="custom-control-input cart-auth-mode-signup-input" ng-model="model.mode" ng-disabled="progress">
+                                    <label class="custom-control-label cart-auth-mode-signup-label" for="cart-auth-mode-signup">
+                                        کاربر جدید هستم
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-radio cart-auth-mode-signin my-2">
+                                    <input type="radio" id="cart-auth-mode-signin" name="mode" value="signin" class="custom-control-input cart-auth-mode-signin-input" ng-model="model.mode" ng-disabled="progress">
+                                    <label class="custom-control-label cart-auth-mode-signin-label" for="cart-auth-mode-signin">
+                                        بله
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="page-separator cart-auth-separator">
+                    <div class="row form-group cart-auth-username" ng-switch-when="signin">
+                        <label for="cart-auth-username" class="col-form-label col-md-3 text-md-left cart-auth-username-label">
+                            نام کاربری یا موبایل یا پست الکترونیک
+                        </label>
+                        <div class="col-md-9 col-lg-6">
+                            <input type="text" id="cart-auth-username" name="username" class="form-control cart-auth-username-input" ng-model="model.username" dir="ltr" placeholder="e.g. mohsen" ng-disabled="progress" required>
+                            <div class="validation-inline cart-auth-inline-error text-danger" ng-messages="auth.username.$error" ng-show="auth.$submitted || auth.username.$dirty">
+                                <span ng-message="required">
+                                    نام کاربری را بنویسید.
+                                </span>
+                                <span ng-message="server">
+                                    <span ng-bind="validation.username"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group cart-auth-name" ng-switch-when="signup">
+                        <label for="cart-auth-name" class="col-form-label col-md-3 text-md-left cart-auth-name-label">
+                            نام و نام خانوادگی
+                        </label>
+                        <div class="col-md-9 col-lg-6">
+                            <input type="text" id="cart-auth-name" name="name" class="form-control" ng-model="model.name" ng-disabled="progress" required>
+                            <div class="validation-inline cart-auth-inline-error text-danger" ng-messages="auth.name.$error" ng-show="auth.$submitted || auth.name.$dirty">
+                                <span ng-message="required">
+                                    نام و نام خانوادگی را بنویسید.
+                                </span>
+                                <span ng-message="server">
+                                    <span ng-bind="validation.name"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group cart-auth-mobile" ng-switch-when="signup">
+                        <label for="cart-auth-mobile" class="col-form-label col-md-3 text-md-left cart-auth-mobile-label">
+                            شماره موبایل
+                        </label>
+                        <div class="col-md-9 col-lg-6">
+                            <input type="text" id="cart-auth-mobile" name="mobile" class="form-control cart-auth-mobile-input" ng-model="model.mobile" ng-disabled="progress" required>
+                            <div class="validation-inline cart-auth-inline-error text-danger" ng-messages="auth.mobile.$error" ng-show="auth.$submitted || auth.mobile.$dirty">
+                                <span ng-message="required">
+                                    شماره موبایل را بنویسید.
+                                </span>
+                                <span ng-message="server">
+                                    <span ng-bind="validation.mobile"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group cart-auth-email" ng-switch-when="signup">
+                        <label for="cart-auth-email" class="col-form-label col-md-3 text-md-left cart-auth-email-label">
+                            پست الکترونیک
+                        </label>
+                        <div class="col-md-9 col-lg-6">
+                            <div class="input-group cart-auth-email-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text cart-auth-email-optional">
+                                        اختیاری
+                                    </span>
+                                </div>
+                                <input type="text" id="cart-auth-email" name="email" class="form-control text-left cart-auth-email-input" ng-model="model.email" dir="ltr" ng-disabled="progress" placeholder="e.g. info@domain.ir">
+                            </div>
+                            <div class="validation-inline cart-auth-inline-error text-danger" ng-messages="auth.email.$error" ng-show="auth.$submitted || auth.email.$dirty">
+                                <span ng-message="server">
+                                    <span ng-bind="validation.email"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="page-separator cart-auth-separator" ng-switch-when="signup">
+                    <div class="row form-group cart-auth-password">
+                        <label for="cart-auth-password" class="col-form-label col-md-3 text-md-left cart-auth-password-label">
+                            رمز عبور
+                        </label>
+                        <div class="col-md-9 col-lg-6">
+                            <input type="password" id="cart-auth-password" name="password" class="form-control text-left cart-auth-password-input" ng-model="model.password" strength="{{model.mode == 'signup' ? 'medium' : 'none'}}" dir="ltr" ng-disabled="progress" required>
+                            <div class="validation-inline cart-auth-inline-error text-danger" ng-messages="auth.password.$error" ng-show="auth.$submitted || auth.password.$dirty">
+                                <span ng-message="required">
+                                    رمز عبور را بنویسید.
+                                </span>
+                                <span ng-message="strength">
+                                    رمز عبور شما باید؛ حداقل 6 حرف و ترکیبی از حروف کوچک، بزرگ یا اعداد باشد.
+                                </span>
+                                <span ng-message="server">
+                                    <span ng-bind="validation.password"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group cart-auth-rememberme" ng-switch-when="signin">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9 col-lg-6">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" id="cart-auth-rememberme" name="rememberme" class="custom-control-input cart-auth-rememberme-input" ng-model="model.rememberme" value="true" ng-disabled="progress">
+                                <label class="custom-control-label cart-auth-rememberme-label" for="cart-auth-rememberme">
+                                    من را به خاطر بسپار
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group cart-auth-confirmpassword" ng-switch-when="signup">
+                        <label for="cart-auth-confirmpassword" class="col-form-label col-md-3 text-md-left cart-auth-confirmpassword-label">
+                            تکرار رمز عبور
+                        </label>
+                        <div class="col-md-9 col-lg-6">
+                            <input type="password" id="cart-auth-confirmpassword" name="confirmpassword" class="form-control text-left cart-auth-confirmpassword-input" ng-model="model.confirmpassword" compare="model.password" dir="ltr" ng-disabled="progress" required>
+                            <div class="validation-inline cart-auth-inline-error text-danger" ng-messages="auth.confirmpassword.$error" ng-show="auth.$submitted || auth.confirmpassword.$dirty">
+                                <span ng-message="required">
+                                    تکرار رمز عبور را بنویسید.
+                                </span>
+                                <span ng-message="compare">
+                                    رمز عبور با تکرار آن یکسان نیست.
+                                </span>
+                                <span ng-message="server">
+                                    <span ng-bind="validation.confirmpassword"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="page-separator cart-auth-separator">
+                    <div class="row form-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9 col-lg-6">
+                            <button class="btn btn-lg btn-success cart-auth-submit" ng-disabled="progress">
+                                {{model.mode == 'signup' ? 'ثبت‌نام' : 'ورود به وب‌سایت'}}
+                            </button>
+                            <a href="/site/cart" class="btn btn-link">
+                                بازگشت
+                            </a>
+                            <div class="page-oading cart-auth-loading" ng-show="progress">
+                                <i class="fa fa-refresh fa-spin fa-fw"></i>
+                                کمی صبر کنید...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html" />

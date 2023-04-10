@@ -1,0 +1,180 @@
+<footer class="site-footer mt-30">
+    <div class="bg-white border-top pt-65 pb-40">
+        <div class="container">
+            <div class="row">
+                <widget type="content" section="پاورقی" name="footer:about">
+                    <div class="col-12 col-6 col-lg-4 px-lg-20 mb-30">
+                        <h4 class="site-footer-title text-lg mb-20">
+                            @@title
+                        </h4>
+
+                        <div class="site-footer-about text-sm text-muted">
+                            @@description
+                        </div>
+                        <if terms="@@user.admin">
+                            <a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget mt-15">
+                                <i class="fa fa-pencil"></i>
+                                ویرایش
+                            </a>
+                        </if>
+                    </div>
+                </widget>
+                <widget type="menu" section="پاورقی" name="footer:menu">
+                    <div class="col-12 col-6 col-lg-4 px-lg-20 mb-30">
+                        <h4 class="site-footer-title text-lg mb-20">
+                            @@title
+                        </h4>
+                        <ul class="site-footer-menu row m-0 p-0 list-unstyled text-sm m-nhalf">
+                            <loop src="@@items">
+                                <li class="col-6 p-half site-footer-menu-item">
+                                    <a href="@@url" class="site-footer-menu-item-link">@@title</a>
+                                </li>
+                            </loop>
+                            <if terms="@@user.admin">
+                                <li class="list-unstyled mb-2">
+                                    <a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget mt-2">
+                                        <i class="fa fa-pencil"></i>
+                                        ویرایش
+                                    </a>
+                                </li>
+                            </if>
+                        </ul>
+                    </div>
+                </widget>
+                <div class="col-12 col-6 col-lg-4 px-lg-20">
+                    <widget type="subscription" name="footer:subscription" section="پاورقی">
+                        <h4 class="site-footer-title text-lg mb-20">
+                            @@title
+                        </h4>
+                        <div class="footer-subscription pt-1 mb-30">
+                            <form name="subscription" ng-submit="subscription.$valid && submit()"
+                                  eval="collect('@@label')" subscription dynamic-form
+                                  auto-show novalidate>
+                                <scope name="footer-subscription">
+                                    <include name="layouts/validation.html"/>
+                                </scope>
+								<div class="alert alert-success subscription-succeed my-10" ng-show="succeed">
+									<span ng-bind="succeed.description"></span>
+								</div>
+                                <div class="d-flex">
+                                    <input type="text"
+                                           class="form-control form-control-sm footer-subscription-email"
+                                           ng-model="model.email" ng-disabled="progress"
+                                           placeholder="ایمیل خود را وارد کنید"/>
+                                    <button type="submit" ng-disabled="progress"
+                                            class="btn btn-sm btn-success px-3 footer-subscription-submit mr-10">
+                                        عضویت
+                                    </button>
+                                </div>
+                                <div class="validation-inline footer-subscription-inline-error text-danger"
+                                     ng-messages="footersubscription.email.$error"
+                                     ng-show="footersubscription.$submitted || footersubscription.email.$dirty">
+											<span ng-message="server">
+												<span ng-bind="validation.email"></span>
+											</span>
+                                </div>
+                            </form>
+                            <if terms="@@user.admin">
+                                <a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget mt-15">
+                                    <i class="fa fa-pencil"></i>
+                                    تنظیمات
+                                </a>
+                            </if>
+                        </div>
+                    </widget>
+                    <widget type="content" section="پاورقی" name="footer:namaad">
+                        <h4 class="site-footer-title text-lg mb-20">
+                            @@title
+                        </h4>
+                        <div class="site-footer-namaad mb-30">
+                            @@html
+
+                            <if terms="@@user.admin">
+                                <div class="mt-20">
+                                    <a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget">
+                                        <i class="fa fa-pencil"></i>
+                                        ویرایش
+                                    </a>
+                                </div>
+                            </if>
+                        </div>
+                    </widget>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--copyright-->
+    <widget type="content" name="footer:copyright" section="پاورقی">
+        <div class="copyright-container bg-secondary py-25">
+
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12 col-sm text-center text-sm-right mb-2 mb-sm-0">
+                    <span class="copyright-text text-xs">
+                        @@config.copyright
+                    </span>
+                    </div>
+                    <div class="col-12 col-sm-auto">
+                        <div class="d-flex align-items-center flex-row-reverse footer-social-icons justify-content-center justify-content-sm-start">
+                            <if terms="@@facebook.exists()">
+                                <a href="@@facebook" class="fa fa-facebook"></a>
+                            </if>
+                            <if terms="@@telegram.exists()">
+                                <a href="@@telegram" class="fa fa-send"></a>
+                            </if>
+                            <if terms="@@twitter.exists()">
+                                <a href="@@twitter" class="fa fa-twitter"></a>
+                            </if>
+                            <if terms="@@instagram.exists()">
+                                <a href="@@instagram" class="fa fa-instagram"></a>
+                            </if>
+                            <if terms="@@googleplus.exists()">
+                                <a href="@@googleplus" class="fa fa-google-plus"></a>
+                            </if>
+                            <if terms="@@linkedin.exists()">
+                                <a href="@@linkedin" class="fa fa-linkedin"></a>
+                            </if>
+                            <if terms="@@skype.exists()">
+                                <a href="@@skype" class="fa fa-skype"></a>
+                            </if>
+                        </div>
+                        <if terms="@@user.admin">
+                            <div class="text-center mt-15">
+                                <a href="@@editurl"
+                                   class="btn btn-sm btn-edit edit-link edit-link-widget inner-edit-placer">
+                                    <i class="fa fa-pencil"></i>
+                                    ویرایش
+                                </a>
+                            </div>
+                        </if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </widget>
+    <!--/copyright-->
+</footer>
+
+<!--/quickview-->
+<include name="layouts/product/partials/quickview.html" />
+<!--/quickview-->
+
+<script type="text/javascript" src="@@theme/js/bootstrap.js"></script>
+<script type="text/javascript" src="@@theme/js/magnific.popup.js"></script>
+<script type="text/javascript" src="@@theme/js/owl.carousel.js"></script>
+<script type="text/javascript" src="@@theme/js/custom.js"></script>
+<script type="text/javascript" src="@@theme/js/cedarmaps.js"></script>
+<script type="text/javascript" src="@@theme/js/app.js"></script>
+<script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=@@analyticsid" async></script>
+<script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', '@@analyticsid');
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<include name="layouts/header.html"/>
+
+<!--main-->
+<main class="page-container search-container" itmeprop="mainEntity" itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="row">
+            <div class="d-none d-lg-block col-lg-1 col-xl-2"></div>
+            <div class="col-md-12 col-lg-10 col-xl-8">
+                <div class="page-context search-context bg-white rounded shadow-sm p-25 p-sm-30 p-md-35 p-lg-40">
+                    <h1 class="page-title search-title mb-0" itemprop="headline">
+                        @@title
+                    </h1>
+                    <if terms="@@tag.empty()">
+                        <form method="get" action="/site/search" class="search-form mt-25">
+                            <div class="form-group mb-0 search-query">
+                                <div class="input-group search-query-group">
+                                    <input type="text" name="q" class="form-control search-query-input"
+                                           placeholder="این‌جا بنویسید..." value="@@query">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary search-query-submit">
+                                            جستجو
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </if>
+                    <if terms="@@result.any()">
+                        <div class="search-result mt-40">
+                            <loop src="@@result">
+                                <div class="search-item d-flex" itemprop="mentions" itemscope itemtype="http://schema.org/Thing">
+									<if terms="@@image.exists()">
+										<div class="search-item-image d-none d-sm-block">
+											<a href="@@url" class="search-item-link" itemprop="url mainEntityOfPage">
+												<img class="search-item-image-element ml-10" src='@@image?m=thumb&h=100&q=high' alt="@@title">
+											</a>
+										</div>
+									</if>
+									<div class="search-item-context">
+										<h2 class="search-item-title" itemprop="name">
+											<a href="@@url" class="search-item-link" itemprop="url mainEntityOfPage">
+												@@title
+											</a>
+										</h2>
+										<span class="search-item-url">
+											@@url
+										</span>
+										<if terms="@@description.exists()">
+											<p class="search-item-description" itemprop="description">
+												@@description
+											</p>
+										</if>
+									</div>
+								</div>
+								<hr class="search-item-separator">
+                            </loop>
+                            <include name="layouts/pager.html"/>
+                        </div>
+                    </if>
+                    <if terms="@@query.exists() && @@result.empty()">
+                        <div class="page-empty search-empty alert alert-warning mt-15 text-xs">
+                            جستجو نتیجه ای نداشت!
+                        </div>
+                    </if>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html"/>

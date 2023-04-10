@@ -1,0 +1,132 @@
+<include name="layouts/header.html"/>
+<!--main-->
+<main class="page-container blog-container blog-cover-container" itemprop="mainEntity" itemscope
+      itemtype="http://schema.org/Blog">
+    <div class="blog-cover-header text-center" style='background-image: url(@@image.append("?f=50"));'>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-10 col-xl-8">
+                    <h1 class="page-title blog-title blog-cover-header-title text-white mb-0" itemprop="headline">
+                        @@title
+                    </h1>
+                    <if terms="@@content.exists()">
+                        <div class="page-description blog-description blog-cover-header-description break-word text-white text-sm mt-20"
+                             itemprop="text">
+                            @@content
+                        </div>
+                    </if>
+                    <if terms="@@user.admin">
+                        <if terms="@@editurl.exists()">
+                            <a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-page blog-cover-edit">
+                                <i class="fa fa-pencil"></i>
+                                ویرایش صفحه
+                            </a>
+                        </if>
+                        <if terms="@@addurl.exists()">
+                            <a href="@@addurl" class="btn btn-sm btn-create add-link add-link-post blog-cover-add"
+                               target="_blank">
+                                <i class="fa fa-plus"></i>
+                                ایجاد نوشته
+                            </a>
+                        </if>
+                    </if>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="d-none d-lg-block col-lg-1 col-xl-2"></div>
+            <div class="col-md-12 col-lg-10 col-xl-8">
+                <div class="page-context blog-context blog-cover-context rounded bg-white">
+                    <if terms="@@image.exists()">
+                        <link itemprop="image" href="@@image">
+                    </if>
+                    <if terms="@@posts.empty()">
+                        <div class="page-empty blog-empty blog-cover-empty alert alert-warning">
+                            موردی برای نمایش وجود ندارد.
+                        </div>
+                    </if>
+                    <div class="blog-posts-holder">
+
+                        <loop src="@@posts">
+                            <article class="blog-post blog-cover-post py-30 py-md-40 px-md-40" itemprop="blogPost"
+                                     itemscope itemtype="http://schema.org/BlogPosting">
+                                <if terms="@@image.exists()">
+                                    <div class="blog-post-image blog-cover-post-image pb-30">
+                                        <a href="@@url" class="blog-post-image-link blog-cover-post-image-link">
+                                            <img src='@@image.default("/site/resources/images/empty.jpg")?m=crop&w=860&h=360&q=high'
+                                                 class="w-100 blog-post-image-element blog-cover-post-image-element"
+                                                 alt="@@title" itemprop="image">
+                                        </a>
+                                    </div>
+                                </if>
+                                <if terms="@@categories.any()">
+                                    <div class="blog-post-meta blog-post-categories blog-cover-post-categories">
+                                        <loop src="@@categories">
+                                            <a href="@@url"
+                                               class="blog-post-category blog-cover-post-category"
+                                               title="@@metatitle">
+                                                @@title
+                                            </a>
+                                        </loop>
+                                    </div>
+                                </if>
+                                <h2 class="blog-post-title blog-cover-post-title h4 font-weight-bold mb-20"
+                                    itemprop="headline">
+                                    <a href="@@url" class="blog-post-link blog-cover-post-link text-secondary"
+                                       title="@@metatitle" itemprop="url mainEntityOfPage">
+                                        @@title
+                                    </a>
+                                </h2>
+                                <div class="blog-post-excerpt blog-cover-post-excerpt break-word text-muted text-sm"
+                                     itemprop="description">
+                                    @@description
+                                </div>
+                                <div class="mt-20 blog-post-meta blog-cover-post-meta d-flex align-items-center justify-content-between">
+
+                                    <if terms="@@author.exists()">
+                                        <div class="blog-post-author blog-cover-post-author" itemprop="author"
+                                             itemscope
+                                             itemtype="http://schema.org/Person">
+
+                                            <a href="/site/posts?author=@@author.id"
+                                               class="blog-post-author-link blog-cover-post-author-link d-flex align-items-center"
+                                               itemprop="url">
+                                                <img src='@@author.avatar.default("/site/resources/avatars/empty.png")?m=crop&h=34&w=34'
+                                                     class="rounded-circle ml-10"
+                                                     alt="@@author.name.default('ناشناس')"/>
+                                                <span itemprop="name">@@author.name.default("ناشناس")</span>
+                                            </a>
+                                            <if terms="@@author.avatar.exists()">
+                                                <link itemprop="image" href="@@author.avatar">
+                                            </if>
+                                        </div>
+                                    </if>
+                                    <div class="blog-post-date blog-cover-post-date">
+                                        <meta itemprop="datePublished dateModified" content="@@date.universal">
+                                        @@date
+                                    </div>
+                                </div>
+                                <if terms="@@user.admin">
+                                    <a href="@@editurl"
+                                       class="btn btn-sm btn-edit edit-link edit-link-post blog-cover-post-edit">
+                                        <i class="fa fa-pencil"></i>
+                                        ویرایش
+                                    </a>
+                                    <div class="clearfix"></div>
+                                </if>
+                            </article>
+                        </loop>
+                    </div>
+                    <include name="layouts/pager.html"/>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html"/>

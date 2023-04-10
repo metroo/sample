@@ -1,0 +1,212 @@
+<widget type="content" name="blog:about" section="وبلاگ">
+	<div class="card blog-sidebar-about">
+		<if terms="@@image.empty()">
+			<div class="card-header">
+				<h6 class="card-title blog-sidebar-about-title">
+					@@title
+				</h6>
+			</div>
+		</if>
+		<if terms="@@image.exists()">
+			<img src="@@image?m=thumb&w=480&h=320&q=high" class="card-img-top blog-sidebar-about-image">
+		</if>
+		<div class="card-body">
+			<div class="blog-sidebar-about-description break-word">
+				@@description
+			</div>
+			<if terms="@@url.exists()">
+				<a href="@@url" class="btn btn-primary blog-sidebar-about-permalink">
+					@@link.default("بیش‌تر بخوانید")
+				</a>
+			</if>
+			<if terms="@@user.admin">
+				<div>
+				<a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget blog-sidebar-about-edit">
+					<i class="fa fa-pencil"></i>
+					ویرایش
+				</a></div>
+			</if>
+		</div>
+	</div>
+</widget>
+<widget type="menu" name="blog:categories" section="وبلاگ">
+	<div class="card blog-sidebar-categories">
+		<div class="card-header">
+			<h6 class="card-title blog-sidebar-categories-title">
+				@@title
+			</h6>
+		</div>
+		<div class="card-body">
+			<if terms="@@items.any()">
+				<ul class="blog-sidebar-categories-list text-sm">
+					<loop src="@@items" recursive="@@subset">
+						<li class="blog-sidebar-categories-item">
+							<a href="@@url" class="blog-sidebar-categories-link" title="@@metatitle">
+								@@title
+							</a>
+							<if terms="@@subset.any()">
+								<ul class="blog-sidebar-categories-subset">
+									@@recursive
+								</ul>
+							</if>
+						</li>
+					</loop>
+				</ul>
+			</if>
+			<if terms="@@items.empty()">
+				<div class="blog-sidebar-categories-empty alert alert-warning">
+					موردی وجود ندارد.
+				</div>
+			</if>
+			<if terms="@@user.admin">
+				<a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget blog-sidebar-categories-edit">
+					<i class="fa fa-pencil"></i>
+					ویرایش
+				</a>
+			</if>
+		</div>
+	</div>
+</widget>
+<widget type="content" name="blog:search" section="وبلاگ">
+	<div class="card blog-sidebar-search">
+		<div class="card-header">
+			<h6 class="card-title blog-sidebar-search-title">
+				@@title
+			</h6>
+		</div>
+		<div class="card-body">
+			<if terms="@@description.exists()">
+				<div class="blog-sidebar-search-description break-word">
+					@@description
+				</div>
+			</if>
+			<form action="/site/search" class="blog-sidebar-search-form">
+				<div class="input-group input-group-sm">
+					<input type="text" name="q" class="form-control" placeholder="بنویسید...">
+					<div class="input-group-append">
+						<button class="btn btn-secondary">
+							جستجو
+						</button>
+					</div>
+				</div>
+			</form>
+			<if terms="@@user.admin">
+				<a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget blog-sidebar-search-edit">
+					<i class="fa fa-pencil"></i>
+					ویرایش
+				</a>
+			</if>
+		</div>
+	</div>
+</widget>
+<widget type="subscription" name="blog:subscription" section="وبلاگ">
+	<div class="card blog-sidebar-subscription">
+		<div class="card-header">
+			<h6 class="card-title blog-sidebar-subscription-title">
+				@@title
+			</h6>
+		</div>
+		<div class="card-body" subscription auto-show>
+			<div class="blog-sidebar-subscription-description">
+				عضو خبرنامه ماهانه وب‌سایت شوید و تازه‌ترین نوشته‌ها را در پست الکترونیک خود دریافت کنید.
+			</div>
+			<div class="alert alert-success blog-sidebar-subscription-succeed" ng-show="succeed">
+				<span ng-bind="succeed.description"></span>
+			</div>
+			<form name="subscription" class="blog-sidebar-subscription-form" ng-submit="subscription.$valid && submit()" eval="collect('@@label')" ng-hide="succeed" dynamic-form novalidate>
+				<div class="input-group input-group-sm">
+					<input type="text" name="email" class="form-control" ng-model="model.email" placeholder="آدرس پست الکترونیک" ng-disabled="progress" required>
+					<div class="input-group-append">
+						<button class="btn btn-secondary" ng-disabled="progress">
+							عضویت
+						</button>
+					</div>
+				</div>
+				<div class="validation-inline blog-sidebar-subscription-inline-error text-danger" ng-messages="subscription.email.$error" ng-show="subscription.$submitted || subscription.email.$dirty">
+					<span ng-message="required">
+						آدرس پست الکترونیک خود را بنویسید.
+					</span>
+					<span ng-message="server">
+						<span ng-bind="validation.email"></span>
+					</span>
+				</div>
+				<div class="blog-sidebar-subscription-loading" ng-show="progress">
+					<i class="fa fa-refresh fa-spin fa-fw"></i>
+					کمی صبر کنید...
+				</div>
+			</form>
+			<if terms="@@user.admin">
+				<a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget blog-sidebar-subscription-edit">
+					<i class="fa fa-pencil"></i>
+					ویرایش
+				</a>
+			</if>
+		</div>
+	</div>
+</widget>
+<widget type="archive" name="blog:archive" section="وبلاگ">
+	<div class="card blog-sidebar-archive">
+		<div class="card-header">
+			<h6 class="card-title blog-sidebar-archive-title">
+				@@title
+			</h6>
+		</div>
+		<div class="card-body">
+			<if terms="@@items.any()">
+				<ul class="blog-sidebar-archive-list text-sm">
+					<loop src="@@items">
+						<li class="blog-sidebar-archive-item">
+							<a href="@@url" class="blog-sidebar-archive-link">
+								@@monthname @@year
+							</a>
+						</li>
+					</loop>
+				</ul>
+			</if>
+			<if terms="@@items.empty()">
+				<div class="blog-sidebar-archive-empty">
+					موردی وجود ندارد.
+				</div>
+			</if>
+			<if terms="@@user.admin">
+				<a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget blog-sidebar-archive-edit">
+					<i class="fa fa-pencil"></i>
+					ویرایش
+				</a>
+			</if>
+		</div>
+	</div>
+</widget>
+<widget type="tags" name="blog:tags" section="وبلاگ">
+	<div class="card blog-sidebar-tags">
+		<div class="card-header">
+			<h6 class="card-title blog-sidebar-tags-title">
+				@@title
+			</h6>
+		</div>
+		<div class="card-body">
+			<if terms="@@items.any()">
+				<ul class="blog-sidebar-tags-list mt-n2 list-unstyled pr-0 mb-0">
+					<loop src="@@items">
+						<li class="blog-sidebar-tags-item ml-2 mt-2 d-inline-block align-middle">
+							<a href="@@url" title="@@metatitle" class="blog-sidebar-tags-link blog-sidebar-tags-link-size@@size bg-light px-10 py-1 rounded">
+								@@title
+							</a>
+						</li>
+					</loop>
+				</ul>
+			</if>
+			<if terms="@@items.empty()">
+				<div class="blog-sidebar-tags-empty">
+					موردی وجود ندارد.
+				</div>
+			</if>
+			<if terms="@@user.admin">
+				<a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-widget blog-sidebar-tags-edit">
+					<i class="fa fa-pencil"></i>
+					ویرایش
+				</a>
+			</if>
+		</div>
+	</div>
+</widget>

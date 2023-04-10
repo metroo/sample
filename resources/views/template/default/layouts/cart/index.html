@@ -1,0 +1,248 @@
+<include name="layouts/header.html"/>
+<!--main-->
+<main class="page-container cart-container" cart>
+    <div class="container">
+        <div class="page-context cart-context bg-white rounded shadow-sm p-25 p-sm-30 p-md-35 p-lg-40">
+            <h1 class="page-title cart-title">
+                @@title
+            </h1>
+            <div ng-hide="loading && !ready" auto-show>
+                <scope name="cart-checkout">
+                    <include name="layouts/validation.html"/>
+
+                </scope>
+                <div ng-show="ready">
+                    <div ng-show="model.items">
+                        <div class="page-description cart-description">
+                            فهرست محصولاتی که به سبدخرید اضافه کردید را در زیر مشاهده می‌کنید.
+                        </div>
+                        <div class="cart-items">
+                            <form name="items" class="cart-item" ng-submit="items.$valid && update(item)"
+                                  ng-repeat="item in model.items" novalidate>
+                                <hr class="page-separator cart-separator">
+                                <div class="row">
+                                    <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                                        <div class="d-flex align-items-center h-100">
+                                            <div class="cart-item-image w-100">
+                                                <a ng-href="{{item.product.url}}" class="cart-item-image-link"
+                                                   target="_blank">
+                                                    <img ng-src="{{item.product.image||'/site/resources/images/empty.jpg'}}?m=thumb&w=300&h=300&q=high"
+                                                         class="img-responsive cart-item-image-element">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4 col-lg-3 col-xl-4">
+                                        <div class="d-flex align-items-center h-100 pr-md-30 cart-col">
+                                            <div class="cart-item-details w-100">
+                                                <h5 class="cart-item-title">
+                                                    <a ng-href="{{item.product.url}}" class="cart-item-link"
+                                                       target="_blank">
+                                                        {{item.title}}
+                                                    </a>
+                                                </h5>
+                                                <div class="cart-item-subtitle" ng-show="item.subtitle">
+                                                    {{item.subtitle}}
+                                                </div>
+                                                <div class="cart-item-id">
+                                                    کد: {{item.product.variant.id}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-3 col-xl-3">
+                                        <div class="d-flex align-items-center h-100 pr-md-30 cart-col">
+                                            <div class="cart-item-amounts w-100">
+                                                <div class="cart-item-quantity">
+                                                    <div class="input-group input-group-sm cart-item-quantity-group">
+                                                        <div class="input-group-prepend">
+														<span class="input-group-text">
+															تعداد
+														</span>
+                                                        </div>
+                                                        <input type="number" name="quantity"
+                                                               class="form-control cart-item-quantity-input"
+                                                               ng-model="item.quantity" min="1"
+                                                               max="{{item.product.variant.max}}"
+                                                               ng-disabled="item.progress" required>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-secondary"
+                                                                    ng-disabled="item.progress">
+                                                                <i class="fa fa-fw fa-check"
+                                                                   ng-hide="item.progress"></i>
+                                                                <i class="fa fa-fw fa-refresh fa-spin"
+                                                                   ng-show="item.progress"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="validation-inline cart-item-inline-error text-danger"
+                                                         ng-messages="items.$error" ng-show="items.$dirty">
+													<span ng-message="required">
+														تعداد را بنویسید.
+													</span>
+                                                        <span ng-message="min">
+														بیش‌تر از 0 بنویسید.
+													</span>
+                                                        <span ng-message="max">
+														کم‌تر از {{item.product.variant.max + 1}} بنویسید.
+													</span>
+                                                    </div>
+                                                </div>
+                                                <div class="cart-item-price">
+                                                    قیمت:
+                                                    <span class="cart-item-price-compare" ng-show="item.discount">
+													{{item.price|number}}
+												</span>
+                                                    <span class="cart-item-price-value">
+													{{(item.price - item.discount)|number}}
+												</span>
+                                                </div>
+                                                <div class="cart-item-shipping" ng-show="item.shipping">
+                                                    حمل و نقل: {{item.shipping|number}}
+                                                </div>
+                                                <div class="cart-item-tax" ng-show="item.tax">
+                                                    مالیات: {{item.tax}}%
+                                                </div>
+                                                <a href="javascript:;"
+                                                   class="badge badge-danger cart-item-remove text-white"
+                                                   ng-click="removeItem(item)" click-confirm="آیا از حذف مطمئن هستید؟">
+                                                    <i class="fa fa-fw fa-times" ng-hide="item.progress"></i>
+                                                    <i class="fa fa-fw fa-refresh fa-spin" ng-show="item.progress"></i>
+                                                    حذف
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-xl-3">
+                                        <div class="d-flex align-items-center h-100 pr-md-30 cart-col">
+                                            <div class="cart-item-subtotal">
+                                                <h6 class="cart-item-subtotal-title">
+                                                    جمع
+                                                </h6>
+                                                {{item.total|number}} تومان
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <hr class="page-separator cart-separator">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form name="coupons" ng-submit="coupons.$valid && submit()" class="cart-coupons"
+                                      cart-coupons dynamic-form novalidate>
+                                    <div class="form-group cart-coupons-code">
+                                        <div class="input-group cart-coupons-code-group">
+                                            <input type="text" class="form-control cart-coupons-code-input" name="code"
+                                                   ng-model="model.code" ng-disabled="progress"
+                                                   placeholder="کوپن تخفیف خود را بنویسید..." required>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary cart-coupons-code-btn"
+                                                        ng-disabled="progress">
+                                                    اعمال
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="validation-inline cart-coupons-inline-error text-danger"
+                                             ng-messages="coupons.code.$error" ng-show="coupons.$submitted">
+											<span ng-message="required">
+												کوپن تخفیف را بنویسید.
+											</span>
+                                            <span ng-message="server">
+												<span ng-bind="validation.code"></span>
+											</span>
+                                        </div>
+                                        <div class="cart-coupons-items" ng-show="$parent.model.coupons.length">
+                                            <button type="button" class="btn btn-sm btn-secondary cart-coupons-item"
+                                                    ng-repeat="coupon in $parent.model.coupons"
+                                                    ng-click="removeCoupon(coupon)"
+                                                    click-confirm="آیا از حذف کوپن مطمئن هستید؟">
+                                                <i class="fa fa-times"></i>
+                                                {{coupon}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr class="page-separator cart-separator d-lg-none">
+                            </div>
+                            <div class="col-lg-6">
+                                <table class="table table-bordered table-striped cart-details">
+                                    <tr class="cart-details-subtotal">
+                                        <th class="cart-details-subtotal-label">
+                                            جمع کل
+                                        </th>
+                                        <td class="cart-details-subtotal-value">
+                                            {{model.subtotal|number}} تومان
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-details-weight" ng-if="model.weight">
+                                        <th class="cart-details-weight-label">
+                                            وزن
+                                        </th>
+                                        <td class="cart-details-weight-value">
+                                            {{model.weight|number}} گرم
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-details-shipping" ng-if="model.shipping">
+                                        <th class="cart-details-shipping-label">
+                                            حمل و نقل
+                                        </th>
+                                        <td class="cart-details-shipping-value">
+                                            {{model.shipping|number}} تومان
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-details-tax">
+                                        <th class="cart-details-tax-label">
+                                            مالیات
+                                        </th>
+                                        <td class="cart-details-tax-value">
+                                            {{model.tax|number}} تومان
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-details-discount">
+                                        <th class="cart-details-discount-label">
+                                            تخفیف
+                                        </th>
+                                        <td class="cart-details-discount-value text-red">
+                                            {{model.discount|number}} تومان
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-details-total">
+                                        <th class="cart-details-total-label">
+                                            قابل پرداخت
+                                        </th>
+                                        <td class="cart-details-total-value text-green">
+                                            {{model.price|number}} تومان
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="text-left mt-25">
+                        <a href="/site/cart/checkout" class="btn btn-lg btn-success cart-checkout">
+                            ثبت سفارش
+                        </a>
+                        </div>
+                    </div>
+                    <div class="cart-empty" ng-hide="model.items">
+                        <div class="page-description cart-empty-description">
+                            <mark class="cart-empty-description-text">
+                                سبدخرید شما خالی است. برای افزودن محصولات دلخواه خود به صفحه‌ی فروشگاه مراجعه کنید.
+                            </mark>
+                        </div>
+                        <a href="/site/products" class="btn btn-primary btn-sm cart-empty-link">
+                            مشاهده محصولات
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="page-loading cart-loading" ng-show="loading">
+                <i class="fa fa-refresh fa-spin fa-fw"></i>
+                کمی صبر کنید...
+            </div>
+        </div>
+    </div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html"/>

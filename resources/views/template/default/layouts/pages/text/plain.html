@@ -1,0 +1,48 @@
+<include name="layouts/header.html"/>
+
+<!--main-->
+<main class="page-container text-container text-plain-container" itemprop="mainEntity">
+    <div class="container">
+        <div class="page-context text-context text-plain-context">
+            <include name="layouts/breadcrumb.html"/>
+            <div class="bg-white rounded shadow-sm p-25 p-sm-30 p-md-35 p-lg-40">
+                <h1 class="page-title text-title text-plain-title" itemprop="headline">
+                    @@title
+                </h1>
+                <if terms="@@user.admin">
+                    <a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-page text-plain-edit">
+                        <i class="fa fa-pencil"></i>
+                        ویرایش صفحه
+                    </a>
+                </if>
+                <if terms="@@image.exists()">
+                    <link itemprop="image" href="@@image">
+                </if>
+                <if terms="@@content.exists()">
+                    <div class="text-content text-plain-content figure-content break-word" itemprop="text">
+                        @@content
+                    </div>
+                </if>
+                <if terms="@@showsubset && @@subset.any()">
+                    <ul class="text-subset text-plain-subset">
+                        <loop src="@@subset" recursive="@@subset">
+                            <li class="text-subset-item text-plain-subset-item">
+                                <a href="@@url" class="text-subset-link text-plain-subset-link">
+                                    @@title
+                                </a>
+                            </li>
+                            <if terms="@@subset.any()">
+                                <ul class="text-subset-list text-plain-subset-list">
+                                    @@recursive
+                                </ul>
+                            </if>
+                        </loop>
+                    </ul>
+                </if>
+            </div>
+        </div>
+    </div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html"/>

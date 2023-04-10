@@ -1,0 +1,23 @@
+https://portal.meedc.net/eip/mgmt/server/index.php?road=sso/server&command=userInfo&sso_session_id={sso_sessid}
+
+output:
+
+{
+    "resultCode": "SUCCESS",
+    "success": {
+        "groups_id": "-1",
+        "username": "s.mirbagheri",
+        "firstname": "نام",
+        "lastname": "نام خانوادگی",
+        "email": "s.mirbagheri@meedc.net",
+        "account_type": "STAFF",
+        "person_id": "20612",
+        "staff_code": "11093   ",
+        "account_id": "1933",
+        "calendar_account": "sajjad.mirbagheri",
+        "inbox_info": [],
+        "permissions": [],
+        "sys_code": "110",
+        "mobile": "09158221128"
+    }
+}

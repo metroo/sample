@@ -1,0 +1,310 @@
+<include name="layouts/header.html" />
+<!--main-->
+<main class="page-container cart-payment-container" cart-payment>
+	<div class="container">
+		<div class="page-context cart-payment-context bg-white rounded shadow-sm p-25 p-sm-30 p-md-35 p-lg-40" ng-switch="model.mode">
+			<h1 class="page-title cart-payment-title">
+				@@title
+			</h1>
+			<div ng-hide="loading" auto-show>
+				<div ng-hide="ready">
+					<scope name="cart-payment">
+						<include name="layouts/validation.html" />
+					</scope>
+				</div>
+				<div ng-show="ready">
+					<div class="page-description cart-payment-description">
+						لطفا از طریق فرم زیر اقدام به پرداخت سفارش کنید.
+					</div>
+					<hr class="page-separator cart-payment-separator">
+					<div class="cart-payment-paid" ng-show="paid">
+						<div class="alert alert-success cart-payment-paid-description">
+							پرداخت سفارش با موفقیت انجام شده.
+						</div>
+						<a href="/user/store/orders/{{model.id}}" ng-hide="anonymouse" class="btn btn-primary cart-payment-paid-details">
+							مشاهده جزئیات
+						</a>
+						<a href="/user/store/orders/download" class="btn btn-success cart-payment-paid-download" ng-show="downloadable && !anonymouse">
+							دانلود
+						</a>
+					</div>
+					<div ng-hide="paid">
+						<form name="payment" ng-submit="payment.$valid && submit()" dynamic-form novalidate>
+							<div class="alert alert-success cart-payment-succeed" ng-class="{'mb-5':succeed}" ng-show="succeed">
+								<span ng-bind="succeed.description"></span>
+							</div>
+							<div ng-hide="succeed && succeed.paid !== false">
+								<div class="cart-payment-shipping" ng-show="shippings">
+									<h4 class="cart-payment-shipping-title">
+										<span class="badge badge-primary cart-payment-shipping-badge">
+											{{step(0)}}
+										</span>
+										برنامه ارسال
+									</h4>
+									<div class="cart-payment-shipping-description">
+										لطفا برنامه ارسال خود را انتخاب کنید.
+									</div>
+									<div class="cart-payment-shipping-items">
+										<div class="cart-payment-shipping-item my-2" ng-repeat="item in shippings">
+											<div class="custom-control custom-radio cart-payment-shipping-item-control">
+												<input type="radio" id="cart-payment-shipping-item-{{item.id}}" class="custom-control-input cart-payment-shipping-item-input" ng-value="item.id" ng-model="model.shipping_id" ng-disabled="progress">
+												<label class="custom-control-label cart-payment-shipping-item-label" for="cart-payment-shipping-item-{{item.id}}">
+													{{item.title}} / {{item.cost ? (item.cost | number) + ' تومان' : 'رایگان'}} {{item.description ? '/' : ''}}
+													<i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-original-title="{{item.description}}" ng-show="item.description"></i>
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr class="page-separator cart-payment-separator" ng-show="shippings">
+								<div class="cart-payment-details">
+									<h4 class="cart-payment-details-price">
+										<span class="badge badge-primary cart-payment-details-price-badge">
+											{{step(1)}}
+										</span>
+										مبلغ قابل پرداخت: {{model.remaining_price|number}} تومان
+									</h4>
+									<span class="cart-payment-details-created">
+										ثبت سفارش: {{model.created.subtract}}
+									</span>
+									<span class="cart-payment-details-duedate" ng-show="model.due_date">
+										، سررسید پرداخت: {{model.due_date.subtract}}
+									</span>
+								</div>
+								<hr class="page-separator cart-payment-separator">
+								<div class="cart-payment-method">
+									<h4 class="cart-payment-method-title">
+										<span class="badge badge-primary cart-payment-method-title-badge">
+											{{step(2)}}
+										</span>
+										روش پرداخت
+									</h4>
+									<div class="cart-payment-method-description">
+										لطفا نوع پرداخت مورد نظر خود را از طریق گزینه‌های زیر انتخاب کنید.
+									</div>
+									<div class="custom-control custom-radio cart-payment-method-online my-2" ng-show="model.payment.online">
+										<input type="radio" id="cart-payment-method-online" name="method" class="custom-control-input cart-payment-method-online-input" value="online_payment" ng-model="model.mode" ng-disabled="progress">
+										<label class="custom-control-label cart-payment-method-online-label" for="cart-payment-method-online">
+											پرداخت الکترونیک از طریق کارت‌های عضو شتاب
+										</label>
+									</div>
+									<div class="custom-control custom-radio cart-payment-method-bank my-2" ng-show="model.payment.bank">
+										<input type="radio" id="cart-payment-method-bank" name="method" class="custom-control-input cart-payment-method-bank-input" value="bank" ng-model="model.mode" ng-disabled="progress">
+										<label class="custom-control-label cart-payment-method-bank-label" for="cart-payment-method-bank">
+											پرداخت از طریق واریز به حساب
+										</label>
+									</div>
+									<div class="custom-control custom-radio cart-payment-method-wallet my-2" ng-show="model.payment.wallet">
+										<input type="radio" id="cart-payment-method-wallet" name="method" class="custom-control-input cart-payment-method-wallet-input" value="wallet" ng-model="model.mode" ng-disabled="progress">
+										<label class="custom-control-label cart-payment-method-wallet-label" for="cart-payment-method-wallet">
+											پرداخت از طریق کیف‌پول
+										</label>
+									</div>
+									<div class="custom-control custom-radio cart-payment-method-cod my-2" ng-show="model.payment.cash_on_delivery">
+										<input type="radio" id="cart-payment-method-cod" name="method" class="custom-control-input cart-payment-method-cod-input" value="cash_on_delivery" ng-model="model.mode" ng-disabled="progress">
+										<label class="custom-control-label cart-payment-method-cod-label" for="cart-payment-method-cod">
+											پرداخت در محل
+										</label>
+									</div>
+								</div>
+								<hr class="page-separator cart-payment-separator" ng-show="model.mode">
+								<div class="cart-payment-bank-form" ng-switch-when="bank">
+									<h4 class="cart-payment-bank-title">
+										<span class="badge badge-primary cart-payment-bank-title-badge">
+											{{step(3)}}
+										</span>
+										حساب بانکی
+									</h4>
+									<div class="cart-payment-bank-description">
+										لطفا حساب بانکی مورد نظر خود را انتخاب کنید.
+									</div>
+									<div class="row">
+										<div class="col-md-6 col-xl-4 form-group">
+											<div class="cart-payment-bank-gateway">
+												<select name="gateway_id" class="form-control cart-payment-bank-gateway-input" ng-model="model.gateway_id" ng-disabled="progress" required>
+													<option ng-value="item" ng-repeat="item in accounts">
+														{{item.title}}
+													</option>
+												</select>
+												<div class="validation-inline cart-payment-inline-error text-danger" ng-messages="payment.gateway_id.$error" ng-show="payment.$submitted || payment.gateway_id.$dirty">
+													<span ng-message="required">
+														حساب بانکی را انتخاب کنید.
+													</span>
+													<span ng-message="server">
+														<span ng-bind="validation.gateway_id"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="cart-payment-transfer" ng-switch-when="bank" ng-show="model.gateway_id">
+									<hr class="page-separator cart-payment-separator">
+									<h4 class="cart-payment-transfer-title">
+										<span class="badge badge-primary cart-payment-transfer-title-badge">
+											{{step(4)}}
+										</span>
+										واریز به حساب
+									</h4>
+									<div class="cart-payment-transfer-description">
+										لطفا مبلغ سفارش را به حساب با اطلاعات زیر واریز کنید:
+									</div>
+									<div class="cart-payment-transfer-name">
+										عنوان:
+										<b class="cart-payment-transfer-name-value">
+											{{model.gateway_id.title}}
+										</b>
+									</div>
+									<div class="cart-payment-transfer-owner">
+										صاحب حساب:
+										<b class="cart-payment-transfer-owner-value">
+											{{model.gateway_id.owner}}
+										</b>
+									</div>
+									<div class="cart-payment-transfer-pan" ng-show="model.gateway_id.pan">
+										شماره کارت:
+										<b class="cart-payment-transfer-pan-value">
+											{{model.gateway_id.pan}}
+										</b>
+									</div>
+									<div class="cart-payment-transfer-iban" ng-show="model.gateway_id.iban">
+										شماره شبا:
+										<b class="cart-payment-transfer-iban-value">
+											{{model.gateway_id.iban}}
+										</b>
+									</div>
+									<div class="cart-payment-transfer-account" ng-show="model.gateway_id.account">
+										شماره حساب:
+										<b class="cart-payment-transfer-account-value">
+											{{model.gateway_id.account}}
+										</b>
+									</div>
+								</div>
+								<div class="cart-payment-fish" ng-switch-when="bank" ng-show="model.gateway_id">
+									<hr class="page-separator cart-payment-separator">
+									<h4 class="cart-payment-fish-title">
+										<span class="badge badge-primary cart-payment-fish-title-badge">
+											{{step(5)}}
+										</span>
+										سند پرداخت
+									</h4>
+									<scope name="cart-payment">
+										<include name="layouts/validation.html" />
+									</scope>
+									<div class="cart-payment-fish-description">
+										اطلاعات سند پرداخت خود را از طریق فرم زیر ثبت کنید.
+									</div>
+									<div class="row">
+										<div class="col-md-6 col-lg-4 form-group">
+											<div class="cart-payment-fish-reference">
+												<label for="reference_id" class="cart-payment-fish-reference-label">
+													کد پیگیری
+												</label>
+												<input type="text" name="reference_id" id="reference_id" class="form-control cart-payment-fish-reference-input" maxlength="100" ng-model="model.reference_id" ng-disabled="progress" required>
+												<div class="validation-inline cart-payment-inline-error text-danger" ng-messages="payment.reference_id.$error" ng-show="payment.$submitted || payment.reference_id.$dirty">
+													<span ng-message="required">
+														کد پیگیری را بنویسید.
+													</span>
+													<span ng-message="server">
+														<span ng-bind="validation.reference_id"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12 col-lg-8 form-group">
+											<div class="cart-payment-fish-description-field">
+												<label for="description" class="cart-payment-fish-description-field-label">
+													توضیحات
+												</label>
+												<textarea type="text" name="description" id="description" class="form-control cart-payment-fish-description-field-input" maxlength="4000" rows="5" ng-model="model.description" ng-disabled="progress"></textarea>
+												<div class="validation-inline cart-payment-inline-error text-danger" ng-messages="payment.description.$error" ng-show="payment.$submitted || payment.description.$dirty">
+													<span ng-message="maxlength">
+														توضیحات را کم‌تر از 4000 حرف بنویسید.
+													</span>
+													<span ng-message="server">
+														<span ng-bind="validation.description"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<button class="btn btn-lg btn-success cart-payment-fish-submit" ng-switch="model.mode" ng-disabled="progress">
+										ثبت سند پرداخت
+									</button>
+								</div>
+								<div class="cart-payment-online-form" ng-switch-when="online_payment">
+									<h4 class="cart-payment-online-title">
+										<span class="badge badge-primary cart-payment-online-title-badge">
+											{{step(3)}}
+										</span>
+										درگاه پرداخت
+									</h4>
+									<scope name="cart-payment">
+										<include name="layouts/validation.html" />
+									</scope>
+									<div class="cart-payment-online-description">
+										لطفا درگاه پرداخت مورد نظر خود را انتخاب کنید.
+									</div>
+									<div class="row">
+										<div class="col-md-6 col-xl-4 form-group">
+											<div class="cart-payment-online-gateway">
+												<select name="gateway_id" class="form-control cart-payment-online-gateway-input" ng-model="model.gateway_id" ng-disabled="progress" required>
+													<option ng-value="item" ng-repeat="item in gateways">
+														{{item.title}}
+													</option>
+												</select>
+												<div class="validation-inline cart-payment-inline-error text-danger" ng-messages="payment.gateway_id.$error" ng-show="payment.$submitted || payment.gateway_id.$dirty">
+													<span ng-message="required">
+														درگاه پرداخت را انتخاب کنید.
+													</span>
+													<span ng-message="server">
+														<span ng-bind="validation.gateway_id"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<button class="btn btn-lg btn-success cart-payment-online-submit" ng-switch="model.mode" ng-disabled="progress">
+										پرداخت
+									</button>
+								</div>
+								<div class="cart-payment-wallet-form" ng-switch-when="wallet">
+									<div class="alert alert-warning cart-payment-wallet-description" ng-show="user && model.remaining_price > user.credit">
+										از آنجایی که شارژ کیف‌پول شما کم‌تر از مبلغ قابل پرداخت است؛ اگر بر روی دکمه‌ی پرداخت کلیک کنید، کل موجودی کیف‌پول شما به مقدار {{user.credit|number}} تومان از صورت‌حساب کسر خواهد شد و باقیمانده‌ی آن را می‌توانید از دیگر روش‌های موجود پرداخت کنید.
+									</div>
+									<scope name="cart-payment">
+										<include name="layouts/validation.html" />
+									</scope>
+									<button class="btn btn-lg btn-success cart-payment-wallet-submit" ng-disabled="progress">
+										پرداخت
+									</button>
+								</div>
+								<div class="cart-payment-cod-form" ng-switch-when="cash_on_delivery">
+									<scope name="cart-payment">
+										<include name="layouts/validation.html" />
+									</scope>
+									<button class="btn btn-lg btn-success cart-payment-cod-submit" ng-disabled="progress">
+										ثبت درخواست
+									</button>
+								</div>
+								<div class="page-loading cart-payment-loading" ng-show="loading">
+									<i class="fa fa-refresh fa-spin fa-fw"></i>
+									کمی صبر کنید...
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="page-loading cart-loading" ng-show="loading">
+				<i class="fa fa-refresh fa-spin fa-fw"></i>
+				کمی صبر کنید...
+			</div>
+		</div>
+	</div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html" />

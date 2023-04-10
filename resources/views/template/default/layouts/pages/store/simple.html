@@ -1,0 +1,107 @@
+<include name="layouts/header.html" />
+
+<!--main-->
+<main class="page-container store-container store-simple-container" itemprop="mainEntity" itemscope itemtype="http://schema.org/ItemList">
+	<div class="container">
+		<div class="page-context store-context store-simple-context">
+			<include name="layouts/breadcrumb.html" />
+			<h1 class="page-title store-title store-simple-title mb-0 mt-35" itemprop="headline">
+				@@title
+			</h1>
+			<if terms="@@content.exists()">
+				<div class="page-description store-description store-simple-description break-word mt-3 text-sm pb-half"
+					 itemprop="description">
+					@@content
+				</div>
+			</if>
+			<if terms="@@user.admin">
+				<if terms="@@editurl.exists()">
+					<a href="@@editurl" class="btn btn-sm btn-edit edit-link edit-link-page store-simple-edit">
+						<i class="fa fa-pencil"></i>
+						ویرایش صفحه
+					</a>
+				</if>
+				<if terms="@@addurl.exists()">
+					<a href="@@addurl" class="btn btn-sm btn-create add-link add-link-product store-simple-add" target="_blank">
+						<i class="fa fa-plus"></i>
+						ایجاد محصول
+					</a>
+				</if>
+			</if>
+			<if terms="@@image.exists()">
+				<link itemprop="image" href="@@image">
+			</if>
+			<if terms="@@products.any()">
+				<div class="store-products store-simple-products pt-30">
+					<div class="row">
+						<loop src="@@products">
+							<div class="col-6 col-sm-4 col-xl-3 mb-15">
+								<article
+										class='store-product store-simple-product rounded @@outofstock.whenever("store-simple-product-outofstock")'
+										itemprop="itemListElement" itemscope itemtype="http://schema.org/Product">
+									<div class="store-product-image store-simple-product-image">
+										<a href="@@url"
+										   class="store-product-image-link store-simple-product-image-link"
+										   title="@@metatitle">
+											<img src='@@image.default("/site/resources/images/empty.jpg")?m=crop&w=500&h=500&q=high'
+												 class="img-fluid center-block store-product-image-element store-simple-product-image-element"
+												 alt="@@title" itemprop="image">
+										</a>
+									</div>
+									<h3 class="store-product-title store-simple-product-title" itemprop="name">
+										<a href="@@url" class="store-product-link store-simple-product-link"
+										   title="@@metatitle" itemprop="url mainEntityOfPage">
+											@@title
+										</a>
+
+									</h3>
+									<if terms="@@outofstock.false()">
+										<if terms="@@compareprice.exists">
+											<span class="store-product-compare-price store-simple-product-compare-price">
+												@@compareprice
+											</span>
+										</if>
+										<if terms="@@price.exists">
+											<span class="store-product-price store-simple-product-price"
+												  itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+												<meta itemprop="price" content="@@price.number.rials()">
+												<meta itemprop="priceCurrency" content="IRR">
+												<span>@@price تومان</span>
+											</span>
+										</if>
+										<if terms='@@discount.morethan("0")'>
+                                            <span class="store-product-discount">
+                                                @@discount٪
+                                            </span>
+										</if>
+									</if>
+									<if terms="@@outofstock">
+											<span class="store-product-outofstock-message store-simple-product-outofstock-message">
+												ناموجود
+											</span>
+									</if>
+									<meta itemprop="position" content="@@index">
+									<if terms="@@outofstock.false()">
+										<div class="text-center mt-2">
+											<button class="btn btn-sm btn-primary store-simple-product-quick-view" ng-click="quickview(@@id, '/site/cart')">
+												<if terms="@@inquiry">استعلام محصول</if>
+												<if terms="@@inquiry.false()">
+													<i class="fa fa-shopping-cart"></i>
+													خرید
+												</if>
+											</button>
+										</div>
+									</if>
+								</article>
+							</div>
+						</loop>
+					</div>
+					<include name="layouts/pager.html" />
+				</div>
+			</if>
+		</div>
+	</div>
+</main>
+<!--/main-->
+
+<include name="layouts/footer.html" />

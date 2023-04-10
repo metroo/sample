@@ -1,0 +1,45 @@
+<if terms="@@breadcrumb.exists()">
+	<ol class="breadcrumb rounded" itemprop="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+		<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+			<a href="/" itemprop="item" class="text-muted">
+				<span itemprop="name" class="d-flex align-items-center">
+					<i class="fa fa-home text-primary breadcrumb-home-icon d-inline-flex ml-10 position-relative text-xl" aria-hidden="true"></i>
+					خانه
+				</span>
+			</a>
+			<meta itemprop="position" content="0">
+		</li>
+		<loop src="@@breadcrumb">
+			<li class="breadcrumb-item @@active" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+				<a href="@@url" itemprop="item" class="text-muted">
+					<span itemprop="name">
+						@@title
+					</span>
+				</a>
+				<meta itemprop="position" content="@@index">
+			</li>
+		</loop>
+	</ol>
+</if>
+
+<if terms="@@breadcrumb.empty() && @@_root.title.exists() && @@_root.url.exists()">
+	<ol class="breadcrumb" itemprop="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+		<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+			<a href="/" class="text-muted" itemprop="item">
+				<span itemprop="name" class="d-flex align-items-center">
+					<i class="fa fa-home text-primary breadcrumb-home-icon d-inline-flex ml-10 position-relative text-xl" aria-hidden="true"></i>
+					خانه
+				</span>
+			</a>
+			<meta itemprop="position" content="0">
+		</li>
+		<li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+			<a href="@@_root.url" itemprop="item" class="text-muted">
+				<span itemprop="name">
+					@@_root.title
+				</span>
+			</a>
+			<meta itemprop="position" content="1">
+		</li>
+	</ol>
+</if>

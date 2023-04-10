@@ -1,0 +1,200 @@
+<!--navigation-->
+<div class='navbar-container position-relative shadow-sm@@layout.any("/cover", "blog/plain").whenever("", " mb-30")'>
+    <div class="bg-white py-30 py-sm-35 py-md-40">
+        <div class="container">
+            <div class="row align-items-center justify-content-between flex-grow-1 mx-nhalf">
+                <div class="col col-lg-auto px-half">
+                    <div class="header-logo">
+                        <a href="/">
+                            <img src="@@config.logo" class="header-logo-image" alt="@@config.title"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-5 d-none d-lg-block">
+                    <form class="quicksearch" action="/site/search" dynamic-search auto-show>
+                        <div class="form-group mb-0 position-relative">
+                            <div class="quicksearch-query d-flex">
+                                <input type="text" name="q"
+                                       class="form-control quicksearch-query-input form-control-sm"
+                                       maxlength="100" ng-model="query" ng-model-options="{debounce:500}"
+                                       placeholder="جستجو کنید...">
+
+                                <button class="quicksearch-query-button btn btn-sm btn-primary mr-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa fa-fw fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="quicksearch-items text-right mt-15 position-absolute overflow-hidden bg-white shadow w-100 rounded d-none"
+                                 ng-class="{'d-none': !items.length}">
+                                <div class="quicksearch-item d-flex align-items-center py-10 px-20"
+                                     ng-repeat="item in items">
+                                    <div class="quicksearch-item-image ml-15" ng-show="item.image">
+                                        <a ng-href="{{item.url}}" class="quicksearch-item-image-link">
+                                            <img ng-src="{{item.image}}?m=crop&w=54&h=54&q=high"
+                                                 class="quicksearch-item-image-element">
+                                        </a>
+                                    </div>
+                                    <h4 class="quicksearch-item-title mb-0 text-xs py-half">
+                                        <a ng-href="{{item.url}}" class="quicksearch-item-link text-secondary">
+                                            <span ng-bind="item.title"></span>
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-auto px-half">
+                    <div class="d-flex">
+                        <if terms="@@config.features.store">
+                            <div class="header-minicart" cart>
+                                <div class="dropdown">
+                                    <div class="position-relative" data-toggle="dropdown" id="header-minicart"
+                                         role="button"
+                                         aria-expanded="false"
+                                         aria-haspopup="true">
+                                        <a href="/site/cart"
+                                           class="header-minicart-button d-flex justify-content-center justify-content-sm-end align-items-center flex-row flex-wrap btn btn-light px-2 py-2">
+                                            <i class="fa fa-shopping-cart px-half" aria-hidden="true"></i>
+                                            <span class="header-minicart-badge badge badge-primary position-absolute text-white"
+                                                  ng-bind="model.items.length || 0"></span>
+                                        </a>
+                                    </div>
+                                    <div class="header-minicart-items dropdown-menu p-0" style="right: auto; left: 0;"
+                                         aria-labelledby="header-minicart" ng-if="model.items.length">
+                                        <div class="header-minicart-items-inner  pt-25 px-25 pb-half">
+                                            <form name="items"
+                                                  class="header-minicart-item d-flex align-items-center pb-20"
+                                                  ng-submit="items.$valid && update(item)"
+                                                  ng-repeat="item in model.items" novalidate>
+                                                <a ng-href="{{item.product.url}}"
+                                                   class="header-minicart-item-image-holder d-flex align-items-center justify-content-center border rounded overflow-hidden"
+                                                   target="_blank">
+                                                    <img ng-src="{{item.product.image||'/site/resources/images/empty.jpg'}}?m=thumb&w=88&h=88&q=high"
+                                                         class="header-minicart-item-image w-100">
+                                                </a>
+                                                <div class="header-minicart-item-details flex-grow-1 pr-20">
+                                                    <h5 class="header-minicart-item-title mb-0 text-sm">
+                                                        <a ng-href="{{item.product.url}}"
+                                                           class="header-minicart-item-link d-block text-secondary"
+                                                           target="_blank">
+                                                            {{item.title}}
+                                                        </a>
+                                                    </h5>
+                                                    <div class="header-minicart-item-subtotal text-primary mb-1">
+                                                        {{item.total|number}} تومان
+                                                    </div>
+                                                    <div>
+                                                        <a href="javascript:;"
+                                                           class="badge badge-light header-minicart-item-remove font-weight-normal"
+                                                           ng-click="removeItem(item)"
+                                                           click-confirm="آیا از حذف مطمئن هستید؟">
+                                                            <i class="fa fa-fw fa-times" ng-hide="item.progress"></i>
+                                                            <i class="fa fa-fw fa-refresh fa-spin"
+                                                               ng-show="item.progress"></i>
+                                                            حذف
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="header-minicart-container rounded-bottom border-top p-25">
+                                            <a href="/site/cart"
+                                               class="btn btn-block btn-primary header-minicart-link  py-10 px-30 text-sm">
+                                                ثبت و نهایی کردن سفارش
+                                                <i class="fa fa-chevron-left mr-half align-middle"
+                                                   aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="header-minicart-items dropdown-menu" aria-labelledby="header-minicart"
+                                         ng-if="!model.items.length">
+                                        <div class="dropdown-item">سبد خرید شما خالی است.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </if>
+                        <div class="nav-item dropdown">
+                            <a href="#"
+                               class="nav-link header-user-management-dropdown btn btn-light px-15 mr-10 d-flex align-items-center"
+                               data-toggle="dropdown" role="button" aria-expanded="false">
+                                <i class="fa fa-user header-user-management" aria-hidden="true"></i>
+                            </a>
+                            <if terms="@@user.exists()">
+                                <div class="dropdown-menu header-user-dropdown">
+                                    <if terms="@@user.reseller">
+                                        <a href="/reseller" class="dropdown-item">
+                                            <i class="fa fa-fw ml-1 mt-1 fa-globe"></i>
+                                            بخش نمایندگی
+                                        </a>
+                                    </if>
+                                    <if terms="@@user.admin">
+                                        <a href="/admin" class="dropdown-item">
+                                            <i class="fa fa-fw ml-1 mt-1 fa-gear"></i>
+                                            بخش مدیریت
+                                        </a>
+                                    </if>
+                                    <a href="/user" class="dropdown-item">
+                                        <i class="fa fa-fw ml-1 mt-1 fa-user"></i>
+                                        بخش کاربری
+                                    </a>
+                                    <a href="/user/profile" class="dropdown-item">
+                                        <i class="fa fa-fw ml-1 mt-1 fa-pencil"></i>
+                                        ویرایش مشخصات
+                                    </a>
+                                    <a href="/user/profile/changepassword" class="dropdown-item">
+                                        <i class="fa fa-fw ml-1 mt-1 fa-lock"></i>
+                                        تغییر رمز عبور
+                                    </a>
+                                    <a href="/site/signout" class="dropdown-item">
+                                        <i class="fa fa-fw ml-1 mt-1 fa-power-off"></i>
+                                        خروج
+                                    </a>
+                                </div>
+                            </if>
+                            <if terms="@@users.signup.enabled">
+                                <div class="dropdown-menu header-user-dropdown">
+                                    <a href="@@users.signin" class="dropdown-item">
+                                        ورود
+                                    </a>
+                                    <if terms="@@users.signup.enabled">
+                                        <a href="@@users.signup" class="dropdown-item">
+                                            ثبت‌نام
+                                        </a>
+                                    </if>
+                                </div>
+                            </if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border-top bg-lighten py-2 py-lg-0">
+        <div class="container">
+            <div class="row align-items-center justify-content-between flex-grow-1 mx-nhalf">
+                <div class="col d-block d-lg-none">
+                    <form method="get" action="/site/search" class="mobile-search-form position-relative">
+                        <input type="text" name="q"
+                               class="mobile-search-form-input form-control form-control-sm bg-white shadow-sm "
+                               placeholder="جستجو کنید...">
+                        <button class="mobile-search-form-submit btn btn-link text-muted position-absolute p-0 d-flex align-items-center justify-content-center">
+                            <i class="fa fa-fw fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-auto col-lg order-3 order-lg-2 px-half" navbar-menu>
+                    <nav class="navbar navbar-light navbar-expand-lg" role="navigation" itemscope
+                         itemtype="http://schema.org/SiteNavigationElement">
+                        <if terms="@@ismobiledevice">
+                            <include name="layouts/navigations/offcanvas.html"/>
+                        </if>
+                        <if terms="@@ismobiledevice.false()">
+                            <include name="layouts/navigations/navbar.html"/>
+                        </if>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/navigation-->
